@@ -1,9 +1,7 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Shield, ArrowUpRight } from 'lucide-react';
-
 const HeroSection = () => {
   return <section className="py-20 md:py-28 lg:py-32 relative overflow-hidden bg-[rgba(33,32,32,255)] rounded-sm">
       {/* Simple gradient background */}
@@ -42,15 +40,11 @@ const HeroSection = () => {
               </Link>
             </Button>
             <Button asChild variant="outline" size="sm" className="h-10 px-6 py-2 border-primary/30 hover:border-primary/60 hover:bg-primary/5 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 rounded-md">
-              <Link to="/vulndb" className="flex items-center gap-2 text-primary">
-                Explore Vulnerability Database
-                <ArrowUpRight size={16} />
-              </Link>
+              
             </Button>
           </div>
         </div>
       </div>
     </section>;
 };
-
 export default HeroSection;
