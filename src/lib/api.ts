@@ -1,6 +1,5 @@
-
 import { toast } from "sonner";
-import { EnrichedVulnerability, RawVulnerability } from "@/types/vulnerability";
+import { EnrichedVulnerability, RawVulnerability, SeverityLevel } from "@/types/vulnerability";
 
 // Mock database tables using local storage
 const RAW_POSTS_KEY = 'vulnerabilitydb_raw_posts';
