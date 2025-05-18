@@ -1,12 +1,9 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Shield, ArrowUp } from 'lucide-react';
-
 const HeroSection = () => {
-  return (
-    <section className="py-20 md:py-28 lg:py-32 relative overflow-hidden bg-[rgba(33,32,32,255)] rounded-sm">
+  return <section className="py-20 md:py-28 lg:py-32 relative overflow-hidden bg-[rgba(33,32,32,255)] rounded-sm">
       {/* Simple gradient background */}
       <div className="absolute inset-0 bg-gradient-to-b from-[rgba(33,32,32,255)] to-[rgba(48,48,48,255)] pointer-events-none"></div>
       
@@ -18,11 +15,7 @@ const HeroSection = () => {
           {/* Logo with subtle glow */}
           <div className="mx-auto w-32 h-32 mb-10 relative">
             <div className="absolute inset-0 bg-primary/10 rounded-full blur-lg opacity-60"></div>
-            <img 
-              src="/lovable-uploads/95934007-7a9b-4ece-998f-68e37daf4ec5.png" 
-              alt="DNA Logo" 
-              className="w-full h-full object-contain relative z-10" 
-            />
+            <img src="/lovable-uploads/95934007-7a9b-4ece-998f-68e37daf4ec5.png" alt="DNA Logo" className="w-full h-full object-contain relative z-10" />
           </div>
           
           {/* Text content */}
@@ -39,24 +32,15 @@ const HeroSection = () => {
           </p>
           
           {/* Smaller, more compact CTA buttons */}
-          <div className="flex flex-wrap justify-center gap-3">
-            <Button 
-              asChild 
-              size="sm" 
-              className="text-sm px-4 py-1 h-8"
-            >
-              <Link to="/mrvulnr0" className="flex items-center gap-1">
+          <div className="flex flex-wrap justify-center gap-3 my-0 py-0">
+            <Button asChild size="sm" className="text-sm px-4 py-1 h-8">
+              <Link to="/mrvulnr0" className="flex items-center gap-1 my-px">
                 <Shield size={14} />
                 Try Dr.Vulner0/1 Now
               </Link>
             </Button>
-            <Button 
-              asChild 
-              variant="outline" 
-              size="sm" 
-              className="text-sm px-4 py-1 h-8"
-            >
-              <Link to="/vulndb" className="flex items-center gap-1">
+            <Button asChild variant="outline" size="sm" className="text-sm px-4 py-1 h-8">
+              <Link to="/vulndb" className="flex items-center gap-1 py-[10px]">
                 Explore Vulnerability Database
                 <ArrowUp size={12} className="transform rotate-45" />
               </Link>
@@ -64,8 +48,6 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default HeroSection;
