@@ -5,7 +5,7 @@ interface BinaryRainProps {
   opacity?: number;
 }
 
-const BinaryRain: React.FC<BinaryRainProps> = ({ opacity = 0.3 }) => {
+const BinaryRain: React.FC<BinaryRainProps> = ({ opacity = 0.1 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -33,8 +33,8 @@ const BinaryRain: React.FC<BinaryRainProps> = ({ opacity = 0.3 }) => {
       ctx.fillStyle = `rgba(0, 0, 0, ${opacity/10})`;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Set color and font for the binary
-      ctx.fillStyle = '#0a0';
+      // Set color and font for the binary - dark gray color
+      ctx.fillStyle = '#333333';
       ctx.font = `${fontSize}px monospace`;
 
       // Draw the binary

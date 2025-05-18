@@ -28,8 +28,8 @@ const Header: React.FC = () => {
         <div className="flex items-center gap-2">
           <Link to="/" className="flex items-center gap-2">
             <img 
-              src="/lovable-uploads/d4bb7aa6-ed2f-4e5f-bb96-4815679828fc.png" 
-              alt="Dr. VulnerBitz Logo" 
+              src="/lovable-uploads/95934007-7a9b-4ece-998f-68e37daf4ec5.png" 
+              alt="DNA Logo" 
               className={cn("w-auto", isMrVulnr0Page ? "h-8" : "h-10")}
             />
             <span className={cn(

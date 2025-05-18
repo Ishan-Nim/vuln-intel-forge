@@ -13,9 +13,16 @@ const Index = () => {
       <main className="flex-1">
         {/* Hero Section */}
         <section className="bg-gradient-to-b from-background to-accent py-16 md:py-24 relative overflow-hidden">
-          <BinaryRain opacity={0.3} />
+          <BinaryRain opacity={0.1} />
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
+              <div className="mx-auto w-32 h-32 mb-6">
+                <img 
+                  src="/lovable-uploads/95934007-7a9b-4ece-998f-68e37daf4ec5.png" 
+                  alt="DNA Logo" 
+                  className="w-full h-full object-contain"
+                />
+              </div>
               <h1 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
                 AI Precision. Human Insight. Safer Code.
               </h1>
