@@ -66,7 +66,7 @@ const MrVulnr0 = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      content: "Hello! I'm Dr.Vulner0/1, your AI vulnerability assistant. How can I help you today?",
+      content: "Hello! I'm 🛡️ Dr. Vulnerbits, your AI vulnerability assistant. How can I help you today?",
       type: 'ai',
       timestamp: new Date()
     }
@@ -493,7 +493,7 @@ const MrVulnr0 = () => {
                             {msg.type === 'ai' && (
                               <div className="flex items-center gap-2 mb-2">
                                 <Shield className="text-primary" size={20} />
-                                <div className="font-medium">Dr.Vulner0/1</div>
+                                <div className="font-medium">🛡️ Dr. Vulnerbits</div>
                               </div>
                             )}
                             <p className="text-sm">{msg.content}</p>
@@ -528,12 +528,12 @@ const MrVulnr0 = () => {
                           <div className="max-w-[80%] rounded-lg p-4 bg-card">
                             <div className="flex items-center gap-2">
                               <Shield className="text-primary" size={20} />
-                              <div className="font-medium">Dr.Vulner0/1</div>
+                              <div className="font-medium">🛡️ Dr. Vulnerbits</div>
                               <div className="ml-2 flex items-center">
                                 <Loader2 size={16} className="animate-spin" />
                               </div>
                             </div>
-                            <p className="text-sm mt-2 text-muted-foreground">Analyzing your request...</p>
+                            <p className="text-sm mt-2 text-muted-foreground">Running a quick scan... 🔍</p>
                           </div>
                         </div>
                       )}
@@ -561,7 +561,7 @@ const MrVulnr0 = () => {
                         </Button>
                       </div>
                       <div className="text-xs text-muted-foreground mt-2 text-center">
-                        Dr.Vulner0/1 can assist with identifying and fixing security vulnerabilities in your code.
+                        🛡️ Dr. Vulnerbits can assist with identifying and fixing security vulnerabilities in your code.
                       </div>
                     </div>
                   </div>
