@@ -1,13 +1,10 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Shield, CheckCircle } from 'lucide-react';
-
 const ChatDemoSection = () => {
-  return (
-    <section className="py-16 bg-background">
+  return <section className="py-16 bg-background">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12">Interactive Dr.Vulner0/1 Chat Demo</h2>
+        <h2 className="text-3xl font-bold text-center mb-12">See Dr.Vulner0/1 In Action</h2>
         <p className="text-center text-lg text-muted-foreground mb-12 max-w-3xl mx-auto">
           Experience how easily our AI assistant identifies, explains, and fixes vulnerabilities in your code
         </p>
@@ -131,8 +128,6 @@ const ChatDemoSection = () => {
           <div className="absolute -top-3 -right-3 w-24 h-24 bg-primary/20 rounded-full blur-2xl -z-10"></div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default ChatDemoSection;
