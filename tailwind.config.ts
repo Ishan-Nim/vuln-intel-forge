@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -68,7 +67,7 @@ export default {
           high: '#dd6b20',
           medium: '#d69e2e',
           low: '#38a169',
-          info: '#3182ce',
+          info: '#555555', // Changed from blue to gray
         }
       },
       borderRadius: {
