@@ -11,28 +11,41 @@ const Header: React.FC = () => {
   const { theme } = useTheme();
   const isDarkMode = theme === 'dark';
   const location = useLocation();
+  
+  // Check if we're on the Mr.Vulnr0 page to apply special styling
+  const isMrVulnr0Page = location.pathname === '/mrvulnr0';
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between">
+    <header className={cn(
+      "sticky top-0 z-40 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
+      // Make header more compact on MrVulnr0 page
+      isMrVulnr0Page && "h-14"
+    )}>
+      <div className={cn(
+        "container flex items-center justify-between",
+        isMrVulnr0Page ? "h-14" : "h-16"
+      )}>
         <div className="flex items-center gap-2">
           <Link to="/" className="flex items-center gap-2">
             <img 
               src="/lovable-uploads/d4bb7aa6-ed2f-4e5f-bb96-4815679828fc.png" 
               alt="Dr. VulnerBitz Logo" 
-              className="h-10 w-auto" 
+              className={cn("w-auto", isMrVulnr0Page ? "h-8" : "h-10")}
             />
-            <span className="hidden font-bold text-xl md:inline-block">Dr.VulnerBitz</span>
+            <span className={cn(
+              "hidden font-bold md:inline-block",
+              isMrVulnr0Page ? "text-lg" : "text-xl"
+            )}>Dr.VulnerBitz</span>
           </Link>
         </div>
         
         <nav className="hidden md:flex items-center gap-1">
-          <NavLink to="/" icon={<Home size={18} />}>Home</NavLink>
-          <NavLink to="/vulndb" icon={<LayoutDashboard size={18} />}>Vulnerability Database</NavLink>
-          <NavLink to="/mrvulnr0" icon={<Shield size={18} />}>Mr.Vulnr0</NavLink>
-          <NavLink to="/community" icon={<Users size={18} />}>Community</NavLink>
-          <NavLink to="/about" icon={<HelpCircle size={18} />}>About</NavLink>
-          <NavLink to="/pricing" icon={<DollarSign size={18} />}>Pricing</NavLink>
+          <NavLink to="/" icon={<Home size={isMrVulnr0Page ? 16 : 18} />}>Home</NavLink>
+          <NavLink to="/vulndb" icon={<LayoutDashboard size={isMrVulnr0Page ? 16 : 18} />}>Vulnerability Database</NavLink>
+          <NavLink to="/mrvulnr0" icon={<Shield size={isMrVulnr0Page ? 16 : 18} />}>Mr.Vulnr0</NavLink>
+          <NavLink to="/community" icon={<Users size={isMrVulnr0Page ? 16 : 18} />}>Community</NavLink>
+          <NavLink to="/about" icon={<HelpCircle size={isMrVulnr0Page ? 16 : 18} />}>About</NavLink>
+          <NavLink to="/pricing" icon={<DollarSign size={isMrVulnr0Page ? 16 : 18} />}>Pricing</NavLink>
         </nav>
         
         <div className="flex items-center gap-2">
@@ -53,19 +66,24 @@ interface NavLinkProps {
 const NavLink: React.FC<NavLinkProps> = ({ children, to, icon }) => {
   const location = useLocation();
   const isActive = location.pathname === to;
+  const isMrVulnr0Page = location.pathname === '/mrvulnr0';
   
   return (
     <Link 
       to={to}
       className={cn(
-        "group relative px-4 py-2 rounded-full transition-all duration-300 flex items-center gap-2",
+        "group relative rounded-full transition-all duration-300 flex items-center gap-2",
+        isMrVulnr0Page ? "px-3 py-1.5" : "px-4 py-2",
         isActive 
           ? "bg-primary text-primary-foreground shadow-lg" 
           : "hover:bg-accent hover:text-accent-foreground"
       )}
     >
       {icon}
-      <span className="font-medium text-sm">{children}</span>
+      <span className={cn(
+        "font-medium",
+        isMrVulnr0Page ? "text-xs" : "text-sm"
+      )}>{children}</span>
       {isActive && (
         <span className="absolute inset-0 rounded-full bg-primary/10 animate-pulse pointer-events-none"></span>
       )}
@@ -74,13 +92,21 @@ const NavLink: React.FC<NavLinkProps> = ({ children, to, icon }) => {
 };
 
 const MobileNavToggle: React.FC = () => {
+  const location = useLocation();
+  const isMrVulnr0Page = location.pathname === '/mrvulnr0';
+  
   return (
-    <Button variant="ghost" size="icon" className="md:hidden">
+    <Button 
+      variant="ghost" 
+      size="icon" 
+      className="md:hidden"
+      style={isMrVulnr0Page ? { width: '32px', height: '32px' } : {}}
+    >
       <span className="sr-only">Toggle Menu</span>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
+        width={isMrVulnr0Page ? "20" : "24"}
+        height={isMrVulnr0Page ? "20" : "24"}
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
