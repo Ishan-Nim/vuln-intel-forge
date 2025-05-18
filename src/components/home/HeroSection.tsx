@@ -38,43 +38,29 @@ const HeroSection = () => {
             Dr.Vulner0/1 helps developers, bug bounty hunters, and security teams remediate vulnerabilities faster, smarter, and more securely. It combines cutting-edge AI with real-world security data to explain, enrich, and patch code issues — right in your workflow.
           </p>
           
-          {/* Simple CTA buttons */}
-          <div className="flex flex-wrap justify-center gap-6">
+          {/* Smaller, more compact CTA buttons */}
+          <div className="flex flex-wrap justify-center gap-3">
             <Button 
               asChild 
-              size="lg" 
-              className="text-base px-8 py-6 h-auto font-medium"
+              size="sm" 
+              className="text-sm px-4 py-1 h-8"
             >
-              <Link to="/mrvulnr0" className="flex items-center gap-2">
-                <Shield size={18} />
+              <Link to="/mrvulnr0" className="flex items-center gap-1">
+                <Shield size={14} />
                 Try Dr.Vulner0/1 Now
               </Link>
             </Button>
             <Button 
               asChild 
               variant="outline" 
-              size="lg" 
-              className="text-base px-8 py-6 h-auto font-medium"
+              size="sm" 
+              className="text-sm px-4 py-1 h-8"
             >
-              <Link to="/vulndb" className="flex items-center gap-2">
+              <Link to="/vulndb" className="flex items-center gap-1">
                 Explore Vulnerability Database
-                <ArrowUp size={16} className="transform rotate-45" />
+                <ArrowUp size={12} className="transform rotate-45" />
               </Link>
             </Button>
-          </div>
-          
-          {/* Simple stats */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
-            {[
-              { label: "Vulnerabilities", value: "100,000+" },
-              { label: "Security Teams", value: "500+" },
-              { label: "Faster Remediation", value: "85%" }
-            ].map((stat, index) => (
-              <div key={index} className="bg-primary/5 rounded-xl p-4">
-                <div className="text-2xl font-bold text-primary">{stat.value}</div>
-                <div className="text-sm text-chatgpt-text-dark/70">{stat.label}</div>
-              </div>
-            ))}
           </div>
         </div>
       </div>
