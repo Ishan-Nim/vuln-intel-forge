@@ -16,6 +16,7 @@ import { ThemeProvider } from "./context/ThemeProvider";
 import { useEffect } from "react";
 import { startScheduleChecker } from "./lib/scheduledFetchService";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 const queryClient = new QueryClient();
 
