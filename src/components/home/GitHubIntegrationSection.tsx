@@ -46,7 +46,7 @@ const GitHubIntegrationSection = () => {
   return (
     <section className="py-16 bg-background">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-6">See Dr.Vulner0/1 In Action</h2>
+        <h2 className="text-3xl font-bold text-center mb-6">GitHub Integration</h2>
         <p className="text-center text-lg text-muted-foreground mb-12 max-w-3xl mx-auto">
           Experience seamless integration with your code repositories
         </p>
