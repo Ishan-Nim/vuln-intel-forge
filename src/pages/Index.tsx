@@ -5,14 +5,16 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent } from '@/components/ui/card';
 import { Shield, Code, FileText, Github, Database, Layers, CloudUpload, ArrowRight, CheckCircle } from 'lucide-react';
+import BinaryRain from '@/components/BinaryRain';
 
 const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="bg-gradient-to-b from-background to-accent py-16 md:py-24">
-          <div className="container mx-auto px-4">
+        <section className="bg-gradient-to-b from-background to-accent py-16 md:py-24 relative overflow-hidden">
+          <BinaryRain opacity={0.3} />
+          <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
               <h1 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
                 AI Precision. Human Insight. Safer Code.
