@@ -1,11 +1,9 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent } from '@/components/ui/card';
 import { Shield, Code, FileText, Github, Database, Layers, CloudUpload, ArrowRight, CheckCircle } from 'lucide-react';
-import BinaryRain from '@/components/BinaryRain';
 
 const Index = () => {
   return (
@@ -13,7 +11,6 @@ const Index = () => {
       <main className="flex-1">
         {/* Hero Section */}
         <section className="bg-gradient-to-b from-background to-accent py-16 md:py-24 relative overflow-hidden">
-          <BinaryRain opacity={0.1} />
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
               <div className="mx-auto w-32 h-32 mb-6">
@@ -27,14 +24,14 @@ const Index = () => {
                 AI Precision. Human Insight. Safer Code.
               </h1>
               <h2 className="text-xl md:text-2xl font-medium mb-6">
-                Meet <span className="text-primary font-bold">Mr.Vulnr0</span> — Your AI-Powered Vulnerability Assistant
+                Meet <span className="text-primary font-bold">Dr.Vulner0/1</span> — Your AI-Powered Vulnerability Assistant
               </h2>
               <p className="text-lg mb-8 text-muted-foreground">
-                Mr.Vulnr0 helps developers, bug bounty hunters, and security teams remediate vulnerabilities faster, smarter, and more securely. It combines cutting-edge AI with real-world security data to explain, enrich, and patch code issues — right in your workflow.
+                Dr.Vulner0/1 helps developers, bug bounty hunters, and security teams remediate vulnerabilities faster, smarter, and more securely. It combines cutting-edge AI with real-world security data to explain, enrich, and patch code issues — right in your workflow.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Button asChild size="lg" className="text-base">
-                  <Link to="/mrvulnr0">Try Mr.Vulnr0 Now</Link>
+                  <Link to="/mrvulnr0">Try Dr.Vulner0/1 Now</Link>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="text-base">
                   <Link to="/vulndb">Explore Vulnerability Database</Link>
@@ -47,7 +44,7 @@ const Index = () => {
         {/* AI Chat Demo Section */}
         <section className="py-16 bg-background">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-12">See Mr.Vulnr0 In Action</h2>
+            <h2 className="text-3xl font-bold text-center mb-12">See Dr.Vulner0/1 In Action</h2>
             <p className="text-center text-lg text-muted-foreground mb-12 max-w-3xl mx-auto">
               Experience how easily our AI assistant identifies, explains, and fixes vulnerabilities in your code
             </p>
@@ -94,13 +91,13 @@ const Index = () => {
                   
                   {/* Right side - Chat interface */}
                   <div className="w-2/3 flex flex-col">
-                    {/* Mr.Vulnr0 message */}
+                    {/* Dr.Vulner0/1 message */}
                     <div className="p-4 border-b">
                       <div className="flex items-start gap-3">
                         <Shield className="h-5 w-5 text-primary mt-1" />
                         <div>
-                          <p className="font-medium mb-1">Mr.Vulnr0</p>
-                          <p className="text-sm">Hello! I'm Mr.Vulnr0, your AI vulnerability assistant. How can I help you today?</p>
+                          <p className="font-medium mb-1">Dr.Vulner0/1</p>
+                          <p className="text-sm">Hello! I'm Dr.Vulner0/1, your AI vulnerability assistant. How can I help you today?</p>
                         </div>
                       </div>
                     </div>
@@ -112,13 +109,13 @@ const Index = () => {
                       </div>
                     </div>
                     
-                    {/* Mr.Vulnr0 response */}
+                    {/* Dr.Vulner0/1 response */}
                     <div className="p-4">
                       <div className="flex items-start gap-3">
                         <Shield className="h-5 w-5 text-primary mt-1" />
                         <div className="space-y-3">
                           <div className="flex items-center gap-2">
-                            <p className="font-medium">Mr.Vulnr0</p>
+                            <p className="font-medium">Dr.Vulner0/1</p>
                             <span className="bg-green-500/20 text-green-600 text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
                               <CheckCircle className="h-3 w-3" />
                               <span>Found issue</span>
@@ -302,7 +299,7 @@ const Index = () => {
         {/* Features Section */}
         <section className="py-16 bg-background">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-12">What Can Mr.Vulnr0 Do?</h2>
+            <h2 className="text-3xl font-bold text-center mb-12">What Can Dr.Vulner0/1 Do?</h2>
             <p className="text-center text-lg text-muted-foreground mb-12 max-w-3xl mx-auto">
               Your AI-powered tool designed for developers, bug bounty hunters, and security teams who struggle with understanding or fixing vulnerabilities.
             </p>
@@ -364,7 +361,7 @@ const Index = () => {
               <StepCard 
                 number="3"
                 title="Fix with AI Guidance"
-                description="Mr.Vulnr0 will find the vulnerable code, explain what's wrong, and suggest the fix in your language/framework."
+                description="Dr.Vulner0/1 will find the vulnerable code, explain what's wrong, and suggest the fix in your language/framework."
               />
               <StepCard 
                 number="4"
@@ -380,11 +377,11 @@ const Index = () => {
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl font-bold mb-6">Ready to secure your code?</h2>
             <p className="text-lg mb-8 max-w-2xl mx-auto">
-              Start using Mr.Vulnr0 today and take the first step towards more secure applications.
+              Start using Dr.Vulner0/1 today and take the first step towards more secure applications.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button asChild size="lg" className="text-base">
-                <Link to="/mrvulnr0">Try Mr.Vulnr0 Now</Link>
+                <Link to="/mrvulnr0">Try Dr.Vulner0/1 Now</Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="text-base">
                 <Link to="/vulndb">Explore Vulnerability Database</Link>
@@ -397,7 +394,7 @@ const Index = () => {
       <footer className="bg-card p-4 border-t">
         <div className="container mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} Dr.VulnerBitz</p>
+            <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} Dr.Vulner0/1</p>
             <div className="flex items-center gap-4">
               <Link to="/" className="text-sm hover:underline">Home</Link>
               <Separator orientation="vertical" className="h-4" />
