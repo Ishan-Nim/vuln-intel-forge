@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -24,11 +25,11 @@ const HeroSection = () => {
           </h1>
           
           <h2 className="text-xl md:text-2xl font-medium mb-6 text-chatgpt-text-dark">
-            Meet <span className="text-primary font-bold">Dr.Vulner 0/1</span> — Your AI-Powered Vulnerability Assistant
+            Meet <span className="text-primary font-bold">Dr.0/1 Beta</span> — Your AI-Powered Vulnerability Assistant
           </h2>
           
           <p className="text-lg mb-10 text-chatgpt-text-dark/80 max-w-3xl mx-auto">
-            Dr.Vulner0/1 helps developers, bug bounty hunters, and security teams remediate vulnerabilities faster, smarter, and more securely. It combines cutting-edge AI with real-world security data to explain, enrich, and patch code issues — right in your workflow.
+            Dr.0/1 Beta helps developers, bug bounty hunters, and security teams remediate vulnerabilities faster, smarter, and more securely. It combines cutting-edge AI with real-world security data to explain, enrich, and patch code issues — right in your workflow.
           </p>
           
           {/* Beautiful matching buttons with consistent sizing */}
@@ -36,7 +37,7 @@ const HeroSection = () => {
             <Button asChild size="sm" className="h-10 px-6 py-2 bg-gradient-to-r from-primary to-primary/90 hover:opacity-90 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 rounded-md">
               <Link to="/mrvulnr0" className="flex items-center gap-2">
                 <Shield size={16} />
-                Try Dr.Vulner0/1 Now
+                Try Dr.0/1 Beta
               </Link>
             </Button>
             <Button asChild variant="outline" size="sm" className="h-10 px-6 py-2 border-primary/30 hover:border-primary/60 hover:bg-primary/5 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 rounded-md">
