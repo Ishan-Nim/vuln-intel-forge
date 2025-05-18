@@ -1,28 +1,33 @@
+
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import VulnerabilityFlowChart from '@/components/VulnerabilityFlowChart';
 import { Separator } from '@/components/ui/separator';
-import { ThemeToggle } from '@/components/ThemeToggle';
 
 const Index = () => {
   return (
     <div className="py-12">
-      {/* Hero Section */}
-      <section className="bg-muted py-20 rounded-lg shadow-sm mb-12">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold tracking-tight text-primary mb-4">
-            Meet Mr.Vulnr0 - Your AI Security Sidekick
+      {/* Updated Hero Section */}
+      <section className="bg-background py-20 rounded-lg mb-12 text-center">
+        <div className="container mx-auto px-4">
+          <h1 className="text-5xl font-bold mb-4 text-primary">
+            AI Precision. Human Insight. Safer Code.
           </h1>
-          <p className="text-lg text-muted-foreground mb-8">
-            Automated Vulnerability Management, Real-Time Threat Intelligence
+          <p className="text-xl mb-6 max-w-3xl mx-auto text-muted-foreground">
+            Meet <span className="text-primary font-semibold">Mr.Vulnr0</span> — Your AI-Powered Vulnerability Assistant
+          </p>
+          <p className="text-lg mb-8 max-w-3xl mx-auto text-muted-foreground">
+            Mr.Vulnr0 helps developers, bug bounty hunters, and security teams remediate vulnerabilities faster, smarter, 
+            and more securely. It combines cutting-edge AI with real-world security data to explain, search, and patch code 
+            threats — right in your workflow.
           </p>
           <div className="space-x-4">
-            <Link to="/vulnerabilities">
-              <Button size="lg">Explore Vulnerabilities</Button>
+            <Link to="/mrvulnr0">
+              <Button size="lg" className="px-6">Try Mr.Vulnr0 Now</Button>
             </Link>
-            <Button variant="outline" size="lg">
-              Learn More
-            </Button>
+            <Link to="/vulndb">
+              <Button variant="outline" size="lg" className="px-6">Explore Vulnerability Database</Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -43,7 +48,7 @@ const Index = () => {
         <div className="text-center mb-10">
           <h2 className="text-3xl font-bold tracking-tight text-primary">See Mr.Vulnr0 In Action</h2>
           <p className="text-lg text-muted-foreground mt-4">
-            Witness real-time vulnerability detection and analysis
+            Experience how easily our AI assistant identifies, explains, and fixes vulnerabilities in your code
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
