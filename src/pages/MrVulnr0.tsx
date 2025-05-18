@@ -66,7 +66,7 @@ const MrVulnr0 = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      content: "Hello! I'm 🛡️ Dr. Vulnerbits, your AI vulnerability assistant. How can I help you today?",
+      content: "Hello! I'm 🛡️ Dr. 0/1, your AI vulnerability assistant. How can I help you today?",
       type: 'ai',
       timestamp: new Date()
     }
@@ -501,7 +501,7 @@ const MrVulnr0 = () => {
                               {msg.type === 'ai' && (
                                 <div className="flex items-center gap-2 mb-2">
                                   <Shield className="text-primary" size={20} />
-                                  <div className="font-medium">🛡️ Dr. Vulnerbits</div>
+                                  <div className="font-medium">🛡️ Dr. 0/1</div>
                                 </div>
                               )}
                               <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
@@ -536,7 +536,7 @@ const MrVulnr0 = () => {
                             <div className="max-w-[80%] rounded-lg p-4 bg-card">
                               <div className="flex items-center gap-2">
                                 <Shield className="text-primary" size={20} />
-                                <div className="font-medium">🛡️ Dr. Vulnerbits</div>
+                                <div className="font-medium">🛡️ Dr. 0/1</div>
                                 <div className="ml-2 flex items-center">
                                   <Loader2 size={16} className="animate-spin" />
                                 </div>
@@ -571,7 +571,7 @@ const MrVulnr0 = () => {
                         </Button>
                       </div>
                       <div className="text-xs text-muted-foreground mt-2 text-center">
-                        🛡️ Dr. Vulnerbits can assist with identifying and fixing security vulnerabilities in your code.
+                        🛡️ Dr. 0/1 can assist with identifying and fixing security vulnerabilities in your code.
                       </div>
                     </div>
                   </div>
