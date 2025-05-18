@@ -1,11 +1,8 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-
 const CtaSection = () => {
-  return (
-    <section className="py-16 bg-[rgba(48,48,48,255)]">
+  return <section className="py-16 bg-neutral-800">
       <div className="container mx-auto px-4 text-center">
         <h2 className="text-3xl font-bold mb-6 text-chatgpt-text-dark">Ready to secure your code?</h2>
         <p className="text-lg mb-8 max-w-2xl mx-auto text-chatgpt-text-dark/80">
@@ -20,8 +17,6 @@ const CtaSection = () => {
           </Button>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default CtaSection;

@@ -1,12 +1,9 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Separator } from '@/components/ui/separator';
 import { BookText } from 'lucide-react';
-
 const Footer = () => {
-  return (
-    <footer className="bg-card p-4 border-t">
+  return <footer className="p-4 border-t bg-black/[0.18]">
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} Dr. 0/1</p>
@@ -28,8 +25,6 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Shield, CheckCircle } from 'lucide-react';
 const ChatDemoSection = () => {
-  return <section className="py-16 bg-background">
+  return <section className="py-16 bg-neutral-900">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-12">See Dr.Vulner 𝟶/𝟷 In Action</h2>
         <p className="text-center text-lg text-muted-foreground mb-12 max-w-3xl mx-auto">
