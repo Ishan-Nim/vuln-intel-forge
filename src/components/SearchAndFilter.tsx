@@ -24,13 +24,13 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({
           placeholder="Search vulnerabilities..."
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
-          className="w-full"
+          className="w-full dark:bg-card dark:border-gray-700"
         />
       </div>
       <div className="flex gap-2 items-center">
-        <span className="text-sm whitespace-nowrap">Filter by severity:</span>
+        <span className="text-sm whitespace-nowrap dark:text-chatgpt-text-dark/80">Filter by severity:</span>
         <Select value={selectedSeverity} onValueChange={setSelectedSeverity}>
-          <SelectTrigger className="w-[150px]">
+          <SelectTrigger className="w-[150px] dark:bg-card dark:border-gray-700">
             <SelectValue placeholder="Severity" />
           </SelectTrigger>
           <SelectContent>
@@ -50,6 +50,7 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({
               setSearchQuery('');
               setSelectedSeverity('all');
             }}
+            className="dark:text-chatgpt-text-dark/80 dark:hover:bg-gray-800/30"
           >
             Clear
           </Button>

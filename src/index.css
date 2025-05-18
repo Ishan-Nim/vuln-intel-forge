@@ -5,7 +5,7 @@
  
 @layer base {
   :root {
-    --background: 0 0% 100%; /* #FFFFFF - White */
+    --background: 220 10% 94%; /* Lighter gray background */
     --foreground: 220 6% 10%; /* #202123 - Dark gray/black for text */
 
     --card: 0 0% 100%; /* White */
@@ -14,7 +14,7 @@
     --popover: 0 0% 100%; /* White */
     --popover-foreground: 220 6% 10%;
  
-    --primary: 162 79% 35%; /* #10A37F - ChatGPT Green */
+    --primary: 162 79% 35%; /* #10A37F - ChatGPT Green - keep as requested */
     --primary-foreground: 0 0% 100%; /* White text on primary */
  
     --secondary: 240 1% 97%; /* #F7F7F8 - Light gray */
@@ -29,8 +29,8 @@
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 1% 94%; /* Light gray border */
-    --input: 240 1% 94%;
+    --border: 240 1% 84%; /* Slightly darker border for contrast */
+    --input: 240 1% 84%;
     --ring: 162 79% 35%; /* ChatGPT Green for rings */
  
     --radius: 0.5rem;
@@ -42,7 +42,7 @@
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 162 79% 97%;
     --sidebar-accent-foreground: 162 79% 30%;
-    --sidebar-border: 240 1% 94%;
+    --sidebar-border: 240 1% 84%;
     --sidebar-ring: 162 79% 35%;
 
     /* Severity Level Colors */
@@ -54,7 +54,7 @@
   }
  
   .dark {
-    --background: 240 5% 13%; /* #212020 - ChatGPT dark background */
+    --background: 220 10% 9%; /* #161718 - Slightly lighter than pure black */
     --foreground: 240 3% 90%; /* #E4E4E7 - Light gray text */
  
     --card: 252 6% 14%; /* #343541 - ChatGPT assistant bubble dark */
@@ -63,7 +63,7 @@
     --popover: 252 6% 14%;
     --popover-foreground: 240 3% 90%;
  
-    --primary: 162 79% 35%; /* #10A37F - ChatGPT Green */
+    --primary: 162 79% 35%; /* #10A37F - ChatGPT Green - keep as requested */
     --primary-foreground: 240 5% 13%;
  
     --secondary: 240 2% 27%; /* #444654 - ChatGPT user bubble dark */

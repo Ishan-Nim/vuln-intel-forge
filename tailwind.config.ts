@@ -72,6 +72,8 @@ export default {
         },
         chatgpt: {
           green: '#10A37F',
+          blue: '#3490dc',
+          orange: '#F59E0B',
           'user-bubble-dark': '#444654', 
           'assistant-bubble-dark': '#343541',
           'user-bubble-light': '#F7F7F8',

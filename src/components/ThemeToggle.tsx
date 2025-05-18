@@ -9,15 +9,19 @@ export function ThemeToggle() {
   
   return (
     <div className="flex items-center space-x-2">
-      <Toggle
-        pressed={theme === "dark"}
-        onPressedChange={() => setTheme(theme === "light" ? "dark" : "light")}
-        aria-label="Toggle theme"
-        className="p-2 text-primary hover:bg-accent hover:text-accent-foreground"
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+        className="rounded-full w-8 h-8 p-0"
       >
-        {theme === "light" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+        {theme === "light" ? (
+          <Moon className="h-4 w-4" />
+        ) : (
+          <Sun className="h-4 w-4" />
+        )}
         <span className="sr-only">Toggle theme</span>
-      </Toggle>
+      </Button>
     </div>
   );
 }
