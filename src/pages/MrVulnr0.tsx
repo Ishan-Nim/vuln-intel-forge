@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch';
 import { 
   Shield, 
   Code, 
@@ -14,7 +15,9 @@ import {
   MessageCircle,
   Github,
   FileUp,
-  Terminal
+  Terminal,
+  ArrowUp,
+  ArrowDown
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/components/ui/use-toast';
@@ -123,6 +126,10 @@ const MrVulnr0 = () => {
     }
   ]);
   
+  // New state for GitHub integration
+  const [gitEnabled, setGitEnabled] = useState(true);
+  const [terminalOutput, setTerminalOutput] = useState("Waiting for command...");
+  
   const { toast } = useToast();
   
   // Auto-scroll to bottom when messages change
@@ -220,6 +227,15 @@ document.getElementById('welcome').textContent = 'Welcome, ' + safeInput;`
       ...item,
       active: item.id === id
     })));
+  };
+
+  // New GitHub integration functions
+  const startPush = () => {
+    setTerminalOutput("Preparing to push changes to GitHub...\n> git add .\n> git commit -m \"AI-generated security patches\"\n> git push origin main\nSuccess! Changes pushed to repository.");
+  };
+
+  const startPull = () => {
+    setTerminalOutput("Pulling latest changes from GitHub...\n> git pull origin main\nSuccess! Repository is now up to date.");
   };
 
   return (
@@ -322,10 +338,76 @@ document.getElementById('welcome').textContent = 'Welcome, ' + safeInput;`
                     CONNECT
                   </div>
                   
-                  <Button variant="outline" className="w-full justify-start mb-1" size="sm">
-                    <Github size={16} className="mr-2" />
-                    Connect GitHub
-                  </Button>
+                  {/* GitHub Integration Section - Added to the "red box" area */}
+                  <Card className="mb-4 border border-primary/50 bg-primary/5">
+                    <CardContent className="p-3 text-sm">
+                      <div className="font-medium flex items-center gap-1 mb-2">
+                        <Github size={14} className="text-primary" />
+                        GitHub Integration
+                      </div>
+                      <div className="text-xs text-muted-foreground mb-2">
+                        Stay in sync with your codebase — effortlessly and securely.
+                      </div>
+                      
+                      <div className="bg-card border rounded-md p-2 mb-2">
+                        <div className="flex items-center gap-2">
+                          <CheckCircle size={14} className="text-green-500" />
+                          <span className="text-xs font-medium">GitHub Connected</span>
+                        </div>
+                        
+                        <div className="flex items-center justify-between mt-2">
+                          <div className="text-xs">Status: <span className="text-green-500">🟢 Connected</span></div>
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-xs">Toggle:</span>
+                            <Switch 
+                              checked={gitEnabled} 
+                              onCheckedChange={setGitEnabled}
+                              size="sm"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-1.5 mb-2">
+                        <div className="text-xs font-medium">🔘 Actions</div>
+                        <div className="text-[10px] text-muted-foreground">
+                          Take full control over your repository with a single click:
+                        </div>
+                        <div className="flex gap-2 mt-2">
+                          <Button 
+                            onClick={startPush}
+                            size="sm" 
+                            variant="outline"
+                            className="text-xs w-full"
+                            disabled={!gitEnabled}
+                          >
+                            <ArrowUp size={14} className="mr-1" />
+                            Push to Git
+                          </Button>
+                          <Button 
+                            onClick={startPull}
+                            size="sm" 
+                            variant="outline"
+                            className="text-xs w-full"
+                            disabled={!gitEnabled}
+                          >
+                            <ArrowDown size={14} className="mr-1" />
+                            Pull from Git
+                          </Button>
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <div className="text-xs font-medium flex items-center gap-1">
+                          <Terminal size={12} />
+                          Mini Terminal
+                        </div>
+                        <div className="bg-black text-green-500 text-[10px] rounded p-2 mt-1 font-mono h-[80px] overflow-auto whitespace-pre-wrap">
+                          {terminalOutput}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
                   
                   <Button variant="outline" className="w-full justify-start" size="sm">
                     <FileUp size={16} className="mr-2" />
