@@ -19,6 +19,20 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/components/ui/use-toast';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 type Message = {
   id: string;
@@ -28,6 +42,21 @@ type Message = {
   code?: string;
 };
 
+type Vulnerability = {
+  id: string;
+  name: string;
+  severity: 'high' | 'medium' | 'low';
+  file: string;
+  details: string;
+};
+
+type ContextItem = {
+  id: string;
+  name: string;
+  files: string[];
+  active: boolean;
+};
+
 const MrVulnr0 = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -35,13 +64,66 @@ const MrVulnr0 = () => {
       content: "Hello! I'm Mr.Vulnr0, your AI vulnerability assistant. How can I help you today?",
       type: 'ai',
       timestamp: new Date()
+    },
+    {
+      id: '2',
+      content: "I think I have an XSS vulnerability in my login form.",
+      type: 'user',
+      timestamp: new Date(Date.now() - 60000)
+    },
+    {
+      id: '3',
+      content: "✅ I found the issue in your login.js file. You're not sanitizing user input on line 42. Here's how to fix it securely:",
+      type: 'ai',
+      timestamp: new Date(),
+      code: "// Before\nconst userInput = document.getElementById('username').value;\ndocument.getElementById('welcome').innerHTML = 'Welcome, ' + userInput;\n\n// After\nconst safeInput = DOMPurify.sanitize(userInput);\ndocument.getElementById('welcome').textContent = 'Welcome, ' + safeInput;"
     }
   ]);
+  
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showCodeView, setShowCodeView] = useState(true);
   const [activePanel, setActivePanel] = useState<'chat' | 'code'>('chat');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [contextItems, setContextItems] = useState<ContextItem[]>([
+    {
+      id: '1',
+      name: 'auth-service',
+      files: ['login.js', 'auth.js', 'session.js'],
+      active: true
+    },
+    {
+      id: '2',
+      name: 'payment-service',
+      files: ['checkout.js', 'stripe.js', 'payment.js'],
+      active: false
+    }
+  ]);
+  
+  const [vulnerabilities, setVulnerabilities] = useState<Vulnerability[]>([
+    {
+      id: '1',
+      name: 'Cross-Site Scripting (XSS)',
+      severity: 'high',
+      file: 'login.js',
+      details: 'Unsanitized user input directly inserted into the DOM.'
+    },
+    {
+      id: '2',
+      name: 'SQL Injection',
+      severity: 'high',
+      file: 'auth.js',
+      details: 'Raw user input used in SQL query without parameterization.'
+    },
+    {
+      id: '3',
+      name: 'Insecure Direct Object Reference',
+      severity: 'medium',
+      file: 'session.js',
+      details: 'User IDs directly used in URLs without proper authorization.'
+    }
+  ]);
+  
   const { toast } = useToast();
   
   // Auto-scroll to bottom when messages change
@@ -133,6 +215,13 @@ document.getElementById('welcome').textContent = 'Welcome, ' + safeInput;`
       duration: 3000,
     });
   };
+  
+  const setActiveContext = (id: string) => {
+    setContextItems(prev => prev.map(item => ({
+      ...item,
+      active: item.id === id
+    })));
+  };
 
   return (
     <div className="container-fluid p-0 h-screen">
@@ -153,12 +242,32 @@ document.getElementById('welcome').textContent = 'Welcome, ' + safeInput;`
                     CONTEXT
                   </div>
                   
-                  <Card className="mb-3">
-                    <CardContent className="p-3 text-sm">
-                      <div className="font-medium">auth-service</div>
-                      <div className="text-xs text-muted-foreground">login.js - Currently viewing</div>
-                    </CardContent>
-                  </Card>
+                  {contextItems.map(item => (
+                    <Card 
+                      key={item.id} 
+                      className={cn(
+                        "mb-3 cursor-pointer transition-colors",
+                        item.active && "border-primary"
+                      )}
+                      onClick={() => setActiveContext(item.id)}
+                    >
+                      <CardContent className="p-3 text-sm">
+                        <div className="font-medium">{item.name}</div>
+                        {item.active && item.files.map((file, index) => (
+                          <div 
+                            key={index} 
+                            className={cn(
+                              "text-xs mt-1 flex items-center",
+                              index === 0 ? "text-blue-500 font-medium" : "text-muted-foreground"
+                            )}
+                          >
+                            {index === 0 && <Code size={12} className="mr-1" />}
+                            {file}{index === 0 && " - Currently viewing"}
+                          </div>
+                        ))}
+                      </CardContent>
+                    </Card>
+                  ))}
                   
                   <Card className="mb-4">
                     <CardContent className="p-3 text-sm">
@@ -166,7 +275,45 @@ document.getElementById('welcome').textContent = 'Welcome, ' + safeInput;`
                         <AlertCircle size={14} className="mr-1" />
                         Vulnerabilities
                       </div>
-                      <div className="text-xs">3 issues found</div>
+                      <div className="text-xs">{vulnerabilities.length} issues found</div>
+                      
+                      <Accordion type="single" collapsible className="mt-2">
+                        <AccordionItem value="vulnerabilities">
+                          <AccordionTrigger className="py-1 text-xs">View details</AccordionTrigger>
+                          <AccordionContent>
+                            <div className="max-h-[200px] overflow-y-auto">
+                              <Table>
+                                <TableHeader>
+                                  <TableRow>
+                                    <TableHead className="w-[100px] text-xs p-1">Severity</TableHead>
+                                    <TableHead className="text-xs p-1">Issue</TableHead>
+                                  </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                  {vulnerabilities.map(vuln => (
+                                    <TableRow key={vuln.id}>
+                                      <TableCell className="p-1">
+                                        <span className={cn(
+                                          "inline-block rounded-full px-2 py-0.5 text-[10px] font-bold",
+                                          vuln.severity === 'high' ? "bg-red-100 text-red-800" :
+                                          vuln.severity === 'medium' ? "bg-yellow-100 text-yellow-800" :
+                                          "bg-blue-100 text-blue-800"
+                                        )}>
+                                          {vuln.severity.toUpperCase()}
+                                        </span>
+                                      </TableCell>
+                                      <TableCell className="text-xs p-1">
+                                        <div className="font-medium">{vuln.name}</div>
+                                        <div className="text-muted-foreground text-[10px]">in {vuln.file}</div>
+                                      </TableCell>
+                                    </TableRow>
+                                  ))}
+                                </TableBody>
+                              </Table>
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
                     </CardContent>
                   </Card>
                 </div>
