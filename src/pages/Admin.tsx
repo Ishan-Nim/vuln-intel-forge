@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { fetchPostsFromRSS, processAllRawVulnerabilities, getRawVulnerabilities, getEnrichedVulnerabilities } from '@/lib/api';
 import { RawVulnerability } from '@/types/vulnerability';
+import { FetchMonitor } from '@/components/FetchMonitor';
 
 const Admin = () => {
   const [rawVulnerabilities, setRawVulnerabilities] = useState<RawVulnerability[]>([]);
@@ -129,6 +130,10 @@ const Admin = () => {
       </header>
 
       <main className="flex-1 container mx-auto p-4">
+        <div className="grid grid-cols-1 gap-6 mb-6">
+          <FetchMonitor />
+        </div>
+        
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <Card>
             <CardHeader>
