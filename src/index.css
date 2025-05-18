@@ -5,78 +5,98 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --foreground: 0 0% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 0 0% 10%;
  
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+    --popover-foreground: 0 0% 10%;
  
-    --primary: 240 5.9% 10%; /* Changed to gray */
+    --primary: 142 71% 45%; /* ChatGPT green */
     --primary-foreground: 0 0% 98%;
  
-    --secondary: 240 4.8% 95.9%; /* Changed to light gray */
-    --secondary-foreground: 240 5.9% 10%;
+    --secondary: 0 0% 96%; /* Light gray for secondary */
+    --secondary-foreground: 0 0% 10%;
  
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
  
-    --accent: 240 4.8% 95.9%; /* Changed to light gray */
-    --accent-foreground: 240 5.9% 10%;
+    --accent: 142 71% 97%; /* Very light green for accent backgrounds */
+    --accent-foreground: 142 71% 30%; /* Darker green for accent text */
  
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 142 71% 45%; /* Match primary for rings */
  
     --radius: 0.5rem;
 
-    /* Severity Level Colors - keeping these since they're not blue */
+    /* Sidebar colors */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 0 0% 10%;
+    --sidebar-primary: 142 71% 45%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 142 71% 97%;
+    --sidebar-accent-foreground: 142 71% 30%;
+    --sidebar-border: 0 0% 90%;
+    --sidebar-ring: 142 71% 45%;
+
+    /* Severity Level Colors - keeping these since they work well */
     --severity-critical: 0 100% 65%;
     --severity-high: 25 100% 60%;
     --severity-medium: 45 100% 55%;
-    --severity-low: 195 100% 50%;
-    --severity-info: 0 0% 33%; /* Changed from blue to gray */
+    --severity-low: 142 71% 45%; /* Changed to match ChatGPT green */
+    --severity-info: 0 0% 33%; /* Keeping as gray */
   }
  
   .dark {
-    --background: 240 10% 3.9%;
+    --background: 0 0% 10%;
     --foreground: 0 0% 98%;
  
-    --card: 240 10% 3.9%;
+    --card: 0 0% 15%;
     --card-foreground: 0 0% 98%;
  
-    --popover: 240 10% 3.9%;
+    --popover: 0 0% 15%;
     --popover-foreground: 0 0% 98%;
  
-    --primary: 0 0% 98%; /* Changed to white/gray */
-    --primary-foreground: 240 5.9% 10%;
+    --primary: 142 71% 45%; /* ChatGPT green */
+    --primary-foreground: 0 0% 10%;
  
-    --secondary: 240 3.7% 15.9%;
+    --secondary: 0 0% 20%;
     --secondary-foreground: 0 0% 98%;
  
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 65%;
  
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 142 71% 15%; /* Dark green for accent bg in dark mode */
+    --accent-foreground: 142 71% 60%; /* Lighter green for accent text in dark mode */
  
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 62% 30%;
     --destructive-foreground: 0 0% 98%;
  
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 142 71% 45%;
 
-    /* Severity Level Colors - keeping these since they're not blue */
+    /* Sidebar colors for dark mode */
+    --sidebar-background: 0 0% 15%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 142 71% 45%;
+    --sidebar-primary-foreground: 0 0% 10%;
+    --sidebar-accent: 142 71% 15%;
+    --sidebar-accent-foreground: 142 71% 60%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 142 71% 45%;
+
+    /* Severity Level Colors for dark mode */
     --severity-critical: 0 70% 55%;
     --severity-high: 25 70% 50%;
     --severity-medium: 45 70% 45%;
-    --severity-low: 195 70% 45%;
-    --severity-info: 0 0% 40%; /* Changed from blue to gray */
+    --severity-low: 142 71% 45%; /* Changed to match ChatGPT green */
+    --severity-info: 0 0% 40%; /* Kept as gray */
   }
 }
  
