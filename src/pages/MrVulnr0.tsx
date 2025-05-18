@@ -17,7 +17,8 @@ import {
   FileUp,
   Terminal,
   ArrowUp,
-  ArrowDown
+  ArrowDown,
+  Loader2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/components/ui/use-toast';
@@ -35,6 +36,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { supabase } from "@/integrations/supabase/client";
 
 type Message = {
   id: string;
@@ -66,19 +68,6 @@ const MrVulnr0 = () => {
       content: "Hello! I'm Dr.Vulner0/1, your AI vulnerability assistant. How can I help you today?",
       type: 'ai',
       timestamp: new Date()
-    },
-    {
-      id: '2',
-      content: "I think I have an XSS vulnerability in my login form.",
-      type: 'user',
-      timestamp: new Date(Date.now() - 60000)
-    },
-    {
-      id: '3',
-      content: "✅ I found the issue in your login.js file. You're not sanitizing user input on line 42. Here's how to fix it securely:",
-      type: 'ai',
-      timestamp: new Date(),
-      code: "// Before\nconst userInput = document.getElementById('username').value;\ndocument.getElementById('welcome').innerHTML = 'Welcome, ' + userInput;\n\n// After\nconst safeInput = DOMPurify.sanitize(userInput);\ndocument.getElementById('welcome').textContent = 'Welcome, ' + safeInput;"
     }
   ]);
   
@@ -87,6 +76,7 @@ const MrVulnr0 = () => {
   const [showCodeView, setShowCodeView] = useState(true);
   const [activePanel, setActivePanel] = useState<'chat' | 'code'>('chat');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  
   const [contextItems, setContextItems] = useState<ContextItem[]>([
     {
       id: '1',
@@ -141,7 +131,7 @@ const MrVulnr0 = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
     
     // Add user message
@@ -154,39 +144,67 @@ const MrVulnr0 = () => {
     setMessages(prev => [...prev, userMessage]);
     setInputValue('');
     
-    // Simulate AI thinking
+    // Indicate loading state
     setIsLoading(true);
     
-    // Simulate AI response after a delay
-    setTimeout(() => {
-      let aiResponse: Message;
+    try {
+      // Call the OpenAI API through our Supabase edge function
+      const { data, error } = await supabase.functions.invoke('chat', {
+        body: { message: inputValue }
+      });
       
-      if (inputValue.toLowerCase().includes('xss')) {
-        aiResponse = {
+      if (error) {
+        console.error('Error calling chat function:', error);
+        toast.error('Failed to get response from AI assistant');
+        
+        // Add error message
+        const errorMessage: Message = {
           id: (Date.now() + 1).toString(),
-          content: "I found the issue in your login.js file. You're not sanitizing user input on line 42. Here's how to fix it securely:",
-          type: 'ai',
-          timestamp: new Date(),
-          code: `// Before
-const userInput = document.getElementById('username').value;
-document.getElementById('welcome').innerHTML = 'Welcome, ' + userInput;
-
-// After
-const safeInput = DOMPurify.sanitize(userInput);
-document.getElementById('welcome').textContent = 'Welcome, ' + safeInput;`
-        };
-      } else {
-        aiResponse = {
-          id: (Date.now() + 1).toString(),
-          content: "I'm here to help with security vulnerabilities. Could you share more details about your code or the specific security concern you have?",
+          content: "I'm having trouble connecting to my knowledge base right now. Please try again later.",
           type: 'ai',
           timestamp: new Date()
         };
+        setMessages(prev => [...prev, errorMessage]);
+      } else {
+        // Process the AI response
+        const responseContent = data.content;
+        
+        // Extract code if present (simple heuristic - look for code blocks)
+        let mainContent = responseContent;
+        let codeContent = undefined;
+        
+        const codeBlockMatch = responseContent.match(/```[\s\S]*?```/);
+        if (codeBlockMatch) {
+          codeContent = codeBlockMatch[0].replace(/```(?:[\w]*)?[\r\n]?/, '').replace(/```$/, '').trim();
+          mainContent = responseContent.replace(codeBlockMatch[0], '').trim();
+        }
+        
+        // Add AI response message
+        const aiResponse: Message = {
+          id: (Date.now() + 1).toString(),
+          content: mainContent,
+          type: 'ai',
+          timestamp: new Date(),
+          code: codeContent
+        };
+        
+        setMessages(prev => [...prev, aiResponse]);
       }
+    } catch (err) {
+      console.error('Exception calling chat function:', err);
+      toast.error('Failed to communicate with AI assistant');
       
-      setMessages(prev => [...prev, aiResponse]);
+      // Add error message
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        content: "I encountered an error while processing your request. Please try again.",
+        type: 'ai',
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -504,12 +522,11 @@ document.getElementById('welcome').textContent = 'Welcome, ' + safeInput;`
                             <div className="flex items-center gap-2">
                               <Shield className="text-primary" size={20} />
                               <div className="font-medium">Dr.Vulner0/1</div>
-                              <div className="ml-2 flex gap-1">
-                                <span className="animate-pulse">·</span>
-                                <span className="animate-pulse delay-100">·</span>
-                                <span className="animate-pulse delay-200">·</span>
+                              <div className="ml-2 flex items-center">
+                                <Loader2 size={16} className="animate-spin" />
                               </div>
                             </div>
+                            <p className="text-sm mt-2 text-muted-foreground">Analyzing your request...</p>
                           </div>
                         </div>
                       )}
