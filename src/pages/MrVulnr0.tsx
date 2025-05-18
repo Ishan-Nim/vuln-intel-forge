@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -66,7 +67,7 @@ const MrVulnr0 = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      content: "Hello! I'm 🛡️ Dr. 0/1, your AI vulnerability assistant. How can I help you today?",
+      content: "Hello! I'm Dr. 0/1, your AI vulnerability assistant. How can I help you today?",
       type: 'ai',
       timestamp: new Date()
     }
@@ -495,13 +496,13 @@ const MrVulnr0 = () => {
                             <div className={cn(
                               "max-w-[80%] rounded-lg p-4",
                               msg.type === 'user' 
-                                ? "chatgpt-user-bubble" // Updated to use new ChatGPT-specific class
-                                : "chatgpt-assistant-bubble" // Updated to use new ChatGPT-specific class
+                                ? "chatgpt-user-bubble" 
+                                : "chatgpt-assistant-bubble"
                             )}>
                               {msg.type === 'ai' && (
                                 <div className="flex items-center gap-2 mb-2">
                                   <Shield className="text-primary" size={20} />
-                                  <div className="font-medium">🛡️ Dr. 0/1</div>
+                                  <div className="font-medium">Dr. 0/1</div>
                                 </div>
                               )}
                               <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
@@ -522,7 +523,7 @@ const MrVulnr0 = () => {
                                     <Button 
                                       size="sm" 
                                       onClick={applyFix}
-                                      className="chatgpt-button" // Updated to use ChatGPT button style
+                                      className="chatgpt-button"
                                     >
                                       Apply Fix
                                     </Button>
@@ -537,7 +538,7 @@ const MrVulnr0 = () => {
                             <div className="max-w-[80%] rounded-lg p-4 chatgpt-assistant-bubble">
                               <div className="flex items-center gap-2">
                                 <Shield className="text-primary" size={20} />
-                                <div className="font-medium">🛡️ Dr. 0/1</div>
+                                <div className="font-medium">Dr. 0/1</div>
                                 <div className="ml-2 flex items-center">
                                   <Loader2 size={16} className="animate-spin" />
                                 </div>
@@ -572,7 +573,7 @@ const MrVulnr0 = () => {
                         </Button>
                       </div>
                       <div className="text-xs text-muted-foreground mt-2 text-center">
-                        🛡️ Dr. 0/1 can assist with identifying and fixing security vulnerabilities in your code.
+                        Dr. 0/1 can assist with identifying and fixing security vulnerabilities in your code.
                       </div>
                     </div>
                   </div>

@@ -1,10 +1,11 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Shield, CheckCircle } from 'lucide-react';
 const ChatDemoSection = () => {
   return <section className="py-16 bg-neutral-900">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12">See Dr.Vulner 𝟶/𝟷 In Action</h2>
+        <h2 className="text-3xl font-bold text-center mb-12">See Dr.0/1 Beta In Action</h2>
         <p className="text-center text-lg text-muted-foreground mb-12 max-w-3xl mx-auto">
           Experience how easily our AI assistant identifies, explains, and fixes vulnerabilities in your code
         </p>
@@ -51,13 +52,13 @@ const ChatDemoSection = () => {
               
               {/* Right side - Chat interface */}
               <div className="w-2/3 flex flex-col">
-                {/* Dr.Vulner0/1 message */}
+                {/* Dr.0/1 message */}
                 <div className="p-4 border-b">
                   <div className="flex items-start gap-3">
                     <Shield className="h-5 w-5 text-primary mt-1" />
                     <div>
-                      <p className="font-medium mb-1">Dr.Vulner 	𝟶/𝟷</p>
-                      <p className="text-sm">Hello! I'm Dr.Vulner0/1, your AI vulnerability assistant. How can I help you today?</p>
+                      <p className="font-medium mb-1">Dr.0/1</p>
+                      <p className="text-sm">Hello! I'm Dr.0/1, your AI vulnerability assistant. How can I help you today?</p>
                     </div>
                   </div>
                 </div>
@@ -69,13 +70,13 @@ const ChatDemoSection = () => {
                   </div>
                 </div>
                 
-                {/* Dr.Vulner0/1 response */}
+                {/* Dr.0/1 response */}
                 <div className="p-4">
                   <div className="flex items-start gap-3">
                     <Shield className="h-5 w-5 text-primary mt-1" />
                     <div className="space-y-3">
                       <div className="flex items-center gap-2">
-                        <p className="font-medium">Dr.Vulner0/1</p>
+                        <p className="font-medium">Dr.0/1</p>
                         <span className="bg-green-500/20 text-green-600 text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
                           <CheckCircle className="h-3 w-3" />
                           <span>Found issue</span>
