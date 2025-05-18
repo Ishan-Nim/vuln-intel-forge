@@ -1,11 +1,11 @@
 
 import React from 'react';
 import HeroSection from '@/components/home/HeroSection';
+import GitHubIntegrationSection from '@/components/home/GitHubIntegrationSection';
 import ChatDemoSection from '@/components/home/ChatDemoSection';
 import VulnerabilityPreviewSection from '@/components/home/VulnerabilityPreviewSection';
 import FeaturesSection from '@/components/home/FeaturesSection';
 import HowItWorksSection from '@/components/home/HowItWorksSection';
-import GitHubIntegrationSection from '@/components/home/GitHubIntegrationSection';
 import CtaSection from '@/components/home/CtaSection';
 import Footer from '@/components/Footer';
 
@@ -14,11 +14,11 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       <main className="flex-1">
         <HeroSection />
+        <GitHubIntegrationSection />
         <ChatDemoSection />
         <VulnerabilityPreviewSection />
         <FeaturesSection />
         <HowItWorksSection />
-        <GitHubIntegrationSection />
         <CtaSection />
       </main>
       <Footer />
