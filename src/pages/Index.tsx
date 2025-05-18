@@ -1,12 +1,129 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import VulnerabilityCard from '@/components/VulnerabilityCard';
+import VulnerabilityDetail from '@/components/VulnerabilityDetail';
+import SearchAndFilter from '@/components/SearchAndFilter';
+import { EnrichedVulnerability } from '@/types/vulnerability';
+import { getEnrichedVulnerabilities } from '@/lib/api';
 
 const Index = () => {
+  const [vulnerabilities, setVulnerabilities] = useState<EnrichedVulnerability[]>([]);
+  const [selectedVulnerability, setSelectedVulnerability] = useState<EnrichedVulnerability | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedSeverity, setSelectedSeverity] = useState('all');
+  const [loading, setLoading] = useState(true);
+
+  // Fetch vulnerability data on component mount
+  useEffect(() => {
+    const loadVulnerabilities = () => {
+      setLoading(true);
+      try {
+        const data = getEnrichedVulnerabilities();
+        setVulnerabilities(data);
+      } catch (error) {
+        console.error('Error loading vulnerabilities:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadVulnerabilities();
+  }, []);
+
+  // Filter vulnerabilities based on search query and selected severity
+  const filteredVulnerabilities = vulnerabilities.filter(vulnerability => {
+    // Filter by search query
+    const matchesSearch = searchQuery
+      ? vulnerability.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        vulnerability.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        vulnerability.cveId.toLowerCase().includes(searchQuery.toLowerCase())
+      : true;
+
+    // Filter by severity
+    const matchesSeverity = selectedSeverity === 'all' || vulnerability.severityLevel === selectedSeverity;
+
+    return matchesSearch && matchesSeverity;
+  });
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen flex flex-col">
+      <header className="bg-card p-4 shadow">
+        <div className="container mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+              <h1 className="text-2xl font-bold">Vulnerability Database</h1>
+              <p className="text-sm text-muted-foreground">Cybersecurity intelligence with AI-enriched insights</p>
+            </div>
+            <div className="flex items-center">
+              <Button asChild>
+                <Link to="/admin">Admin Dashboard</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main className="flex-1 container mx-auto p-4">
+        <section className="mb-6">
+          <SearchAndFilter
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            selectedSeverity={selectedSeverity}
+            setSelectedSeverity={setSelectedSeverity}
+          />
+        </section>
+
+        <section>
+          {loading ? (
+            <div className="flex flex-col items-center justify-center p-12">
+              <div className="h-10 w-10 rounded-full border-4 border-primary border-t-transparent animate-spin"></div>
+              <p className="mt-4 text-sm text-muted-foreground">Loading vulnerabilities...</p>
+            </div>
+          ) : filteredVulnerabilities.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredVulnerabilities.map(vulnerability => (
+                <VulnerabilityCard
+                  key={vulnerability.id}
+                  vulnerability={vulnerability}
+                  onSelect={(vuln) => setSelectedVulnerability(vuln)}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center p-12 bg-card rounded-lg">
+              <h3 className="text-lg font-semibold mb-2">No vulnerabilities found</h3>
+              {searchQuery || selectedSeverity !== 'all' ? (
+                <p className="text-muted-foreground">Try adjusting your search or filter criteria</p>
+              ) : (
+                <p className="text-muted-foreground">Visit the Admin Dashboard to fetch and process new vulnerabilities</p>
+              )}
+            </div>
+          )}
+        </section>
+
+        {selectedVulnerability && (
+          <VulnerabilityDetail 
+            vulnerability={selectedVulnerability} 
+            onClose={() => setSelectedVulnerability(null)} 
+          />
+        )}
+      </main>
+
+      <footer className="bg-card p-4 border-t">
+        <div className="container mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} Vulnerability Database</p>
+            <div className="flex items-center gap-4">
+              <Link to="/" className="text-sm hover:underline">Home</Link>
+              <Separator orientation="vertical" className="h-4" />
+              <Link to="/admin" className="text-sm hover:underline">Admin</Link>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
