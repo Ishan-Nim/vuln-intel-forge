@@ -5,6 +5,7 @@ import ChatDemoSection from '@/components/home/ChatDemoSection';
 import VulnerabilityPreviewSection from '@/components/home/VulnerabilityPreviewSection';
 import FeaturesSection from '@/components/home/FeaturesSection';
 import HowItWorksSection from '@/components/home/HowItWorksSection';
+import GitHubIntegrationSection from '@/components/home/GitHubIntegrationSection';
 import CtaSection from '@/components/home/CtaSection';
 import Footer from '@/components/Footer';
 
@@ -17,6 +18,7 @@ const Index = () => {
         <VulnerabilityPreviewSection />
         <FeaturesSection />
         <HowItWorksSection />
+        <GitHubIntegrationSection />
         <CtaSection />
       </main>
       <Footer />
