@@ -8,6 +8,7 @@ import VulnerabilityDetail from '@/components/VulnerabilityDetail';
 import SearchAndFilter from '@/components/SearchAndFilter';
 import { EnrichedVulnerability } from '@/types/vulnerability';
 import { getEnrichedVulnerabilities } from '@/lib/api';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const Index = () => {
   const [vulnerabilities, setVulnerabilities] = useState<EnrichedVulnerability[]>([]);
@@ -57,7 +58,8 @@ const Index = () => {
               <h1 className="text-2xl font-bold">Vulnerability Database</h1>
               <p className="text-sm text-muted-foreground">Cybersecurity intelligence with AI-enriched insights</p>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center gap-4">
+              <ThemeToggle />
               <Button asChild>
                 <Link to="/admin">Admin Dashboard</Link>
               </Button>

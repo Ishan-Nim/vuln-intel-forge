@@ -5,6 +5,49 @@
 
 @layer base {
   :root {
+    /* Light mode */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    
+    --primary: 217 91% 60%;
+    --primary-foreground: 210 40% 98%;
+    
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11%;
+    
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215 16% 47%;
+    
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222 47% 11%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222 47% 11%;
+    
+    --radius: 0.5rem;
+
+    /* Sidebar colors for light mode */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: 210 40% 96.1%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214.3 31.8% 91.4%;
+    --sidebar-ring: 222 47% 11%;
+  }
+
+  .dark {
     --background: 222 47% 11%;
     --foreground: 210 40% 98%;
 
@@ -32,8 +75,6 @@
     --border: 217 32% 17%;
     --input: 217 32% 17%;
     --ring: 224 76% 48%;
-
-    --radius: 0.5rem;
 
     --sidebar-background: 222 47% 14%;
     --sidebar-foreground: 210 40% 98%;
