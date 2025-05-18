@@ -32,15 +32,8 @@ serve(async (req) => {
   }
 
   try {
-    // For multipart/form-data, we need to get the raw content directly
-    const contentType = req.headers.get('content-type') || '';
-    
-    if (!contentType.includes('multipart/form-data')) {
-      throw new Error("Content type must be multipart/form-data");
-    }
-    
-    // Read the request body as text
-    const reportContent = await req.text();
+    // Parse the JSON request body
+    const { reportContent } = await req.json();
     
     if (!reportContent) {
       throw new Error("No report content provided");

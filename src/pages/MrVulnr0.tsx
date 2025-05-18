@@ -322,7 +322,7 @@ const MrVulnr0 = () => {
       const fileContent = await file.text();
       console.log("File content length:", fileContent.length);
       
-      // Call the Supabase edge function directly with the text content
+      // Call the Supabase edge function with the report content as JSON
       const { data, error } = await supabase.functions.invoke('analyze-report', {
         body: { reportContent: fileContent }
       });
