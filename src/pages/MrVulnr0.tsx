@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -155,7 +156,10 @@ const MrVulnr0 = () => {
       
       if (error) {
         console.error('Error calling chat function:', error);
-        toast.error('Failed to get response from AI assistant');
+        toast({
+          variant: "destructive",
+          description: 'Failed to get response from AI assistant'
+        });
         
         // Add error message
         const errorMessage: Message = {
@@ -192,7 +196,10 @@ const MrVulnr0 = () => {
       }
     } catch (err) {
       console.error('Exception calling chat function:', err);
-      toast.error('Failed to communicate with AI assistant');
+      toast({
+        variant: "destructive",
+        description: 'Failed to communicate with AI assistant'
+      });
       
       // Add error message
       const errorMessage: Message = {
