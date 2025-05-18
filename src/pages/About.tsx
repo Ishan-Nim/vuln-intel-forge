@@ -16,6 +16,7 @@ import {
   Info,
   Zap,
   Star,
+  Book, // Added Book icon import
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { 
