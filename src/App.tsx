@@ -12,6 +12,7 @@ import Community from "./pages/Community";
 import About from "./pages/About";
 import Pricing from "./pages/Pricing";
 import DrVulner01 from "./pages/MrVulnr0";
+import ProjectGuidelines from "./pages/ProjectGuidelines";
 import { ThemeProvider } from "./context/ThemeProvider";
 import { useEffect } from "react";
 import { startScheduleChecker } from "./lib/scheduledFetchService";
@@ -44,6 +45,7 @@ const App = () => {
                   <Route path="/pricing" element={<Pricing />} />
                   <Route path="/mrvulnr0" element={<DrVulner01 />} />
                   <Route path="/admin" element={<Admin />} />
+                  <Route path="/guidelines" element={<ProjectGuidelines />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </div>
