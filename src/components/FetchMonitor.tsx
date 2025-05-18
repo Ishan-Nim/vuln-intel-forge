@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Reload } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 import { FetchRecord, getFetchSchedule, checkAndPerformScheduledFetch } from '@/lib/scheduledFetchService';
 import { format, formatDistanceToNow } from 'date-fns';
 
@@ -98,7 +98,7 @@ export function FetchMonitor() {
           <div className="flex justify-between items-center mb-2">
             <h3 className="text-sm font-medium">Fetch History</h3>
             <Button variant="outline" size="sm" onClick={handleManualFetch}>
-              <Reload className="mr-2 h-4 w-4" />
+              <RefreshCw className="mr-2 h-4 w-4" />
               Run Manual Fetch
             </Button>
           </div>
