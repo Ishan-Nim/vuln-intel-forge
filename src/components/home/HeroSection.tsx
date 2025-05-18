@@ -1,7 +1,9 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Shield, ArrowUp } from 'lucide-react';
+import { Shield, ArrowUpRight } from 'lucide-react';
+
 const HeroSection = () => {
   return <section className="py-20 md:py-28 lg:py-32 relative overflow-hidden bg-[rgba(33,32,32,255)] rounded-sm">
       {/* Simple gradient background */}
@@ -31,18 +33,18 @@ const HeroSection = () => {
             Dr.Vulner0/1 helps developers, bug bounty hunters, and security teams remediate vulnerabilities faster, smarter, and more securely. It combines cutting-edge AI with real-world security data to explain, enrich, and patch code issues — right in your workflow.
           </p>
           
-          {/* Smaller, more compact CTA buttons */}
-          <div className="flex flex-wrap justify-center gap-3 my-0 py-0">
-            <Button asChild size="sm" className="text-sm px-4 py-1 h-8">
-              <Link to="/mrvulnr0" className="flex items-center gap-1 my-px">
-                <Shield size={14} />
+          {/* Beautiful matching buttons with consistent sizing */}
+          <div className="flex flex-wrap justify-center gap-4">
+            <Button asChild size="sm" className="h-10 px-6 py-2 bg-gradient-to-r from-primary to-primary/90 hover:opacity-90 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 rounded-md">
+              <Link to="/mrvulnr0" className="flex items-center gap-2">
+                <Shield size={16} />
                 Try Dr.Vulner0/1 Now
               </Link>
             </Button>
-            <Button asChild variant="outline" size="sm" className="text-sm px-4 py-1 h-8">
-              <Link to="/vulndb" className="flex items-center gap-1 py-[10px]">
+            <Button asChild variant="outline" size="sm" className="h-10 px-6 py-2 border-primary/30 hover:border-primary/60 hover:bg-primary/5 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 rounded-md">
+              <Link to="/vulndb" className="flex items-center gap-2 text-primary">
                 Explore Vulnerability Database
-                <ArrowUp size={12} className="transform rotate-45" />
+                <ArrowUpRight size={16} />
               </Link>
             </Button>
           </div>
@@ -50,4 +52,5 @@ const HeroSection = () => {
       </div>
     </section>;
 };
+
 export default HeroSection;
