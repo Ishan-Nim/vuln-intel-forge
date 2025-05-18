@@ -1,162 +1,163 @@
 
 import { toast } from "sonner";
 import { EnrichedVulnerability, RawVulnerability, SeverityLevel } from "@/types/vulnerability";
+import { supabase } from "@/integrations/supabase/client";
 
-// Database constants
-const DB_NAME = 'VulnerabilityDatabase';
-const DB_VERSION = 1;
-const RAW_POSTS_STORE = 'rawVulnerabilities';
-const ENRICHED_POSTS_STORE = 'enrichedVulnerabilities';
-
-// Open database connection
-const openDB = (): Promise<IDBDatabase> => {
-  return new Promise((resolve, reject) => {
-    const request = indexedDB.open(DB_NAME, DB_VERSION);
-    
-    request.onerror = (event) => {
-      console.error('Error opening database:', event);
-      reject('Could not open database');
-    };
-    
-    request.onsuccess = (event) => {
-      resolve(request.result);
-    };
-    
-    request.onupgradeneeded = (event) => {
-      const db = request.result;
-      
-      // Create object stores if they don't exist
-      if (!db.objectStoreNames.contains(RAW_POSTS_STORE)) {
-        const rawStore = db.createObjectStore(RAW_POSTS_STORE, { keyPath: 'id' });
-        rawStore.createIndex('processed', 'processed', { unique: false });
-      }
-      
-      if (!db.objectStoreNames.contains(ENRICHED_POSTS_STORE)) {
-        const enrichedStore = db.createObjectStore(ENRICHED_POSTS_STORE, { keyPath: 'id' });
-        enrichedStore.createIndex('severityLevel', 'severityLevel', { unique: false });
-      }
-    };
-  });
-};
-
-// Get raw posts from database
+// Get raw posts from Supabase
 export const getRawVulnerabilities = async (): Promise<RawVulnerability[]> => {
   try {
-    const db = await openDB();
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction(RAW_POSTS_STORE, 'readonly');
-      const store = transaction.objectStore(RAW_POSTS_STORE);
-      const request = store.getAll();
-      
-      request.onsuccess = () => {
-        resolve(request.result);
-      };
-      
-      request.onerror = (event) => {
-        console.error('Error getting raw vulnerabilities:', event);
-        reject('Could not retrieve raw vulnerabilities');
-      };
-    });
+    const { data, error } = await supabase
+      .from('raw_vulnerabilities')
+      .select('*');
+    
+    if (error) {
+      console.error('Error fetching raw vulnerabilities:', error);
+      return [];
+    }
+
+    console.log(`Retrieved ${data.length} raw vulnerabilities from Supabase`);
+    
+    // Transform from Supabase format to our app's format
+    return data.map(item => ({
+      id: item.id,
+      title: item.title,
+      link: item.link,
+      description: item.description || '',
+      pubDate: item.pub_date,
+      feedSource: item.feed_source,
+      processed: item.processed
+    }));
   } catch (error) {
     console.error('Database error:', error);
     return [];
   }
 };
 
-// Get enriched posts from database
+// Get enriched posts from Supabase
 export const getEnrichedVulnerabilities = async (): Promise<EnrichedVulnerability[]> => {
   try {
-    const db = await openDB();
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction(ENRICHED_POSTS_STORE, 'readonly');
-      const store = transaction.objectStore(ENRICHED_POSTS_STORE);
-      const request = store.getAll();
-      
-      request.onsuccess = () => {
-        resolve(request.result);
-      };
-      
-      request.onerror = (event) => {
-        console.error('Error getting enriched vulnerabilities:', event);
-        reject('Could not retrieve enriched vulnerabilities');
-      };
-    });
+    const { data, error } = await supabase
+      .from('enriched_vulnerabilities')
+      .select('*');
+    
+    if (error) {
+      console.error('Error fetching enriched vulnerabilities:', error);
+      return [];
+    }
+
+    console.log(`Retrieved ${data.length} enriched vulnerabilities from Supabase`);
+    
+    // Transform from Supabase format to our app's format
+    return data.map(item => ({
+      id: item.id,
+      cveId: item.cve_id,
+      title: item.title,
+      link: item.link,
+      description: item.description || '',
+      pubDate: item.pub_date,
+      feedSource: item.feed_source,
+      affectedProducts: item.affected_products || [],
+      technicalAnalysis: item.technical_analysis || '',
+      businessImpact: item.business_impact || '',
+      knownExploits: item.known_exploits || '',
+      mitigationStrategies: item.mitigation_strategies || '',
+      relatedVulnerabilities: item.related_vulnerabilities || [],
+      severityLevel: item.severity_level as SeverityLevel,
+      cvssScore: item.cvss_score
+    }));
   } catch (error) {
     console.error('Database error:', error);
     return [];
   }
 };
 
-// Save raw vulnerability to database
+// Save raw vulnerability to Supabase
 export const saveRawVulnerability = async (vulnerability: RawVulnerability): Promise<void> => {
   try {
-    const db = await openDB();
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction(RAW_POSTS_STORE, 'readwrite');
-      const store = transaction.objectStore(RAW_POSTS_STORE);
+    // Check if vulnerability already exists
+    const { data: existingData } = await supabase
+      .from('raw_vulnerabilities')
+      .select('id')
+      .eq('id', vulnerability.id)
+      .single();
+    
+    if (!existingData) {
+      // Only insert if it doesn't exist
+      const { error } = await supabase
+        .from('raw_vulnerabilities')
+        .insert({
+          id: vulnerability.id,
+          title: vulnerability.title,
+          link: vulnerability.link,
+          description: vulnerability.description,
+          pub_date: vulnerability.pubDate,
+          feed_source: vulnerability.feedSource,
+          processed: vulnerability.processed
+        });
       
-      // Check if post already exists
-      const getRequest = store.get(vulnerability.id);
-      
-      getRequest.onsuccess = () => {
-        if (!getRequest.result) {
-          // Only add if it doesn't exist
-          const addRequest = store.add(vulnerability);
-          
-          addRequest.onsuccess = () => {
-            resolve();
-          };
-          
-          addRequest.onerror = (event) => {
-            console.error('Error adding raw vulnerability:', event);
-            reject('Could not save raw vulnerability');
-          };
-        } else {
-          resolve(); // Already exists, no action needed
-        }
-      };
-      
-      getRequest.onerror = (event) => {
-        console.error('Error checking raw vulnerability:', event);
-        reject('Could not check if vulnerability exists');
-      };
-    });
+      if (error) {
+        console.error('Error saving raw vulnerability:', error);
+      } else {
+        console.log(`Saved raw vulnerability ${vulnerability.id} to Supabase`);
+      }
+    }
   } catch (error) {
     console.error('Database error:', error);
   }
 };
 
-// Save enriched vulnerability to database
+// Save enriched vulnerability to Supabase
 export const saveEnrichedVulnerability = async (vulnerability: EnrichedVulnerability): Promise<void> => {
   try {
-    const db = await openDB();
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction(ENRICHED_POSTS_STORE, 'readwrite');
-      const store = transaction.objectStore(ENRICHED_POSTS_STORE);
+    // Check if vulnerability already exists
+    const { data: existingData } = await supabase
+      .from('enriched_vulnerabilities')
+      .select('id')
+      .eq('id', vulnerability.id)
+      .single();
+    
+    const vulnerabilityData = {
+      id: vulnerability.id,
+      cve_id: vulnerability.cveId,
+      title: vulnerability.title,
+      link: vulnerability.link,
+      description: vulnerability.description,
+      pub_date: vulnerability.pubDate,
+      feed_source: vulnerability.feedSource,
+      affected_products: vulnerability.affectedProducts,
+      technical_analysis: vulnerability.technicalAnalysis,
+      business_impact: vulnerability.businessImpact,
+      known_exploits: vulnerability.knownExploits,
+      mitigation_strategies: vulnerability.mitigationStrategies,
+      related_vulnerabilities: vulnerability.relatedVulnerabilities,
+      severity_level: vulnerability.severityLevel,
+      cvss_score: vulnerability.cvssScore
+    };
+    
+    let error;
+    
+    if (existingData) {
+      // Update if it exists
+      const response = await supabase
+        .from('enriched_vulnerabilities')
+        .update(vulnerabilityData)
+        .eq('id', vulnerability.id);
       
-      // Check if post already exists to update it
-      const getRequest = store.get(vulnerability.id);
+      error = response.error;
+    } else {
+      // Insert if it doesn't exist
+      const response = await supabase
+        .from('enriched_vulnerabilities')
+        .insert(vulnerabilityData);
       
-      getRequest.onsuccess = () => {
-        const request = getRequest.result 
-          ? store.put(vulnerability) // Update existing
-          : store.add(vulnerability); // Add new
-        
-        request.onsuccess = () => {
-          resolve();
-        };
-        
-        request.onerror = (event) => {
-          console.error('Error saving enriched vulnerability:', event);
-          reject('Could not save enriched vulnerability');
-        };
-      };
-      
-      getRequest.onerror = (event) => {
-        console.error('Error checking enriched vulnerability:', event);
-        reject('Could not check if vulnerability exists');
-      };
-    });
+      error = response.error;
+    }
+    
+    if (error) {
+      console.error('Error saving enriched vulnerability:', error);
+    } else {
+      console.log(`Saved enriched vulnerability ${vulnerability.id} to Supabase`);
+    }
   } catch (error) {
     console.error('Database error:', error);
   }
@@ -165,40 +166,16 @@ export const saveEnrichedVulnerability = async (vulnerability: EnrichedVulnerabi
 // Mark a raw vulnerability as processed
 export const markRawVulnerabilityAsProcessed = async (id: string): Promise<void> => {
   try {
-    const db = await openDB();
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction(RAW_POSTS_STORE, 'readwrite');
-      const store = transaction.objectStore(RAW_POSTS_STORE);
-      
-      // Get the vulnerability first
-      const getRequest = store.get(id);
-      
-      getRequest.onsuccess = () => {
-        if (getRequest.result) {
-          const vulnerability = getRequest.result;
-          vulnerability.processed = true;
-          
-          // Update the vulnerability
-          const updateRequest = store.put(vulnerability);
-          
-          updateRequest.onsuccess = () => {
-            resolve();
-          };
-          
-          updateRequest.onerror = (event) => {
-            console.error('Error updating vulnerability status:', event);
-            reject('Could not mark vulnerability as processed');
-          };
-        } else {
-          reject('Vulnerability not found');
-        }
-      };
-      
-      getRequest.onerror = (event) => {
-        console.error('Error getting vulnerability:', event);
-        reject('Could not retrieve vulnerability');
-      };
-    });
+    const { error } = await supabase
+      .from('raw_vulnerabilities')
+      .update({ processed: true })
+      .eq('id', id);
+    
+    if (error) {
+      console.error('Error marking vulnerability as processed:', error);
+    } else {
+      console.log(`Marked vulnerability ${id} as processed in Supabase`);
+    }
   } catch (error) {
     console.error('Database error:', error);
   }
@@ -217,6 +194,8 @@ export const fetchPostsFromRSS = async () => {
     
     // Process each item in the RSS feed
     let newItemCount = 0;
+    const processPromises = [];
+    
     for (let index = 0; index < items.length; index++) {
       const item = items[index];
       const id = `raw-${Date.now()}-${index}`;
@@ -235,14 +214,14 @@ export const fetchPostsFromRSS = async () => {
         processed: false
       };
       
-      // Get existing posts to check for duplicates
-      const existingPosts = await getRawVulnerabilities();
-      if (!existingPosts.some(post => post.title === title && post.link === link)) {
-        await saveRawVulnerability(vulnerability);
-        newItemCount++;
-      }
+      // Save vulnerability to Supabase
+      processPromises.push(saveRawVulnerability(vulnerability).then(() => { newItemCount++; }));
     }
     
+    // Wait for all saves to complete
+    await Promise.all(processPromises);
+    
+    console.log(`Fetched ${newItemCount} new vulnerability posts`);
     toast.success(`Fetched ${newItemCount} new vulnerability posts`);
     return true;
   } catch (error) {

@@ -9,7 +9,96 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      enriched_vulnerabilities: {
+        Row: {
+          affected_products: string[] | null
+          business_impact: string | null
+          created_at: string | null
+          cve_id: string
+          cvss_score: number | null
+          description: string | null
+          feed_source: string | null
+          id: string
+          known_exploits: string | null
+          link: string
+          mitigation_strategies: string | null
+          pub_date: string | null
+          related_vulnerabilities: string[] | null
+          severity_level: string
+          technical_analysis: string | null
+          title: string
+        }
+        Insert: {
+          affected_products?: string[] | null
+          business_impact?: string | null
+          created_at?: string | null
+          cve_id: string
+          cvss_score?: number | null
+          description?: string | null
+          feed_source?: string | null
+          id: string
+          known_exploits?: string | null
+          link: string
+          mitigation_strategies?: string | null
+          pub_date?: string | null
+          related_vulnerabilities?: string[] | null
+          severity_level: string
+          technical_analysis?: string | null
+          title: string
+        }
+        Update: {
+          affected_products?: string[] | null
+          business_impact?: string | null
+          created_at?: string | null
+          cve_id?: string
+          cvss_score?: number | null
+          description?: string | null
+          feed_source?: string | null
+          id?: string
+          known_exploits?: string | null
+          link?: string
+          mitigation_strategies?: string | null
+          pub_date?: string | null
+          related_vulnerabilities?: string[] | null
+          severity_level?: string
+          technical_analysis?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      raw_vulnerabilities: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          feed_source: string | null
+          id: string
+          link: string
+          processed: boolean | null
+          pub_date: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          feed_source?: string | null
+          id: string
+          link: string
+          processed?: boolean | null
+          pub_date?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          feed_source?: string | null
+          id?: string
+          link?: string
+          processed?: boolean | null
+          pub_date?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

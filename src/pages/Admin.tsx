@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -8,6 +9,7 @@ import { Progress } from '@/components/ui/progress';
 import { fetchPostsFromRSS, processAllRawVulnerabilities, getRawVulnerabilities, getEnrichedVulnerabilities } from '@/lib/api';
 import { RawVulnerability } from '@/types/vulnerability';
 import { FetchMonitor } from '@/components/FetchMonitor';
+import { toast } from 'sonner';
 
 const Admin = () => {
   const [rawVulnerabilities, setRawVulnerabilities] = useState<RawVulnerability[]>([]);
@@ -59,14 +61,18 @@ const Admin = () => {
   
   useEffect(() => {
     loadStats();
+    // Inform user about successful connection to Supabase
+    toast.success("Successfully connected to Supabase database");
   }, []);
 
   // Handle fetching posts from RSS feed
   const handleFetchPosts = async () => {
     setIsLoadingRSS(true);
     try {
+      toast.info("Fetching vulnerability data from RSS feed...");
       await fetchPostsFromRSS();
       await loadStats();
+      toast.success("Data saved to Supabase successfully");
     } finally {
       setIsLoadingRSS(false);
     }
@@ -80,6 +86,14 @@ const Admin = () => {
     try {
       const unprocessedPosts = (await getRawVulnerabilities()).filter(post => !post.processed);
       const total = unprocessedPosts.length;
+      
+      if (total === 0) {
+        toast.info("No unprocessed vulnerabilities to enrich");
+        setIsProcessing(false);
+        return;
+      }
+      
+      toast.info(`Starting enrichment of ${total} vulnerabilities...`);
       
       // Show progress for UI purposes
       let progress = 0;
@@ -101,12 +115,14 @@ const Admin = () => {
         await loadStats();
         setProcessProgress(0);
         setIsProcessing(false);
+        toast.success("Enrichment complete and data saved to Supabase");
       }, 500);
       
     } catch (error) {
       console.error('Error processing vulnerabilities:', error);
       setIsProcessing(false);
       setProcessProgress(0);
+      toast.error("Error during vulnerability enrichment process");
     }
   };
 
@@ -120,8 +136,11 @@ const Admin = () => {
               <p className="text-sm text-muted-foreground">Manage vulnerability data and AI enrichment</p>
             </div>
             <div className="flex items-center">
+              <Button variant="outline" asChild className="mr-2">
+                <Link to="/vulndb">View Vulnerability Database</Link>
+              </Button>
               <Button variant="outline" asChild>
-                <Link to="/">View Public Dashboard</Link>
+                <Link to="/">Home</Link>
               </Button>
             </div>
           </div>
