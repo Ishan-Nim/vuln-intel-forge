@@ -32,14 +32,21 @@ serve(async (req) => {
   }
 
   try {
-    const formData = await req.formData();
-    const reportFile = formData.get('report');
+    // For multipart/form-data, we need to get the raw content directly
+    const contentType = req.headers.get('content-type') || '';
     
-    if (!reportFile || !(reportFile instanceof File)) {
-      throw new Error("No report file provided");
+    if (!contentType.includes('multipart/form-data')) {
+      throw new Error("Content type must be multipart/form-data");
     }
-
-    const reportContent = await reportFile.text();
+    
+    // Read the request body as text
+    const reportContent = await req.text();
+    
+    if (!reportContent) {
+      throw new Error("No report content provided");
+    }
+    
+    console.log("Received report content, length:", reportContent.length);
     
     // Call OpenAI API to analyze the report
     const response = await fetch('https://api.openai.com/v1/chat/completions', {

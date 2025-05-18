@@ -136,11 +136,11 @@ const MrVulnr0 = () => {
     }
   ]);
   
-  // New state for GitHub integration
+  // GitHub integration state
   const [gitEnabled, setGitEnabled] = useState(true);
   const [terminalOutput, setTerminalOutput] = useState("Waiting for command...");
   
-  // New state for report upload and analysis
+  // Report upload and analysis state
   const [isUploading, setIsUploading] = useState(false);
   const [reportAnalysis, setReportAnalysis] = useState<ReportAnalysis | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -285,7 +285,7 @@ const MrVulnr0 = () => {
     })));
   };
 
-  // New GitHub integration functions
+  // GitHub integration functions
   const startPush = () => {
     setTerminalOutput("Preparing to push changes to GitHub...\n> git add .\n> git commit -m \"AI-generated security patches\"\n> git push origin main\nSuccess! Changes pushed to repository.");
   };
@@ -294,7 +294,7 @@ const MrVulnr0 = () => {
     setTerminalOutput("Pulling latest changes from GitHub...\n> git pull origin main\nSuccess! Repository is now up to date.");
   };
   
-  // New Report upload and analysis functions
+  // Report upload and analysis functions
   const handleReportUploadClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -318,20 +318,21 @@ const MrVulnr0 = () => {
     setIsUploading(true);
     
     try {
-      // Create a FormData object to send the file
-      const formData = new FormData();
-      formData.append('report', file);
+      // Read the file content
+      const fileContent = await file.text();
+      console.log("File content length:", fileContent.length);
       
-      // Call the Supabase edge function to analyze the report using the supabase client
+      // Call the Supabase edge function directly with the text content
       const { data, error } = await supabase.functions.invoke('analyze-report', {
-        body: formData,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        }
+        body: { reportContent: fileContent }
       });
       
       if (error) {
         throw new Error(error.message || 'Failed to analyze report');
+      }
+      
+      if (!data || !data.analysis) {
+        throw new Error('Invalid response from analysis function');
       }
       
       // Set the analysis result
@@ -461,7 +462,7 @@ const MrVulnr0 = () => {
                     CONNECT
                   </div>
                   
-                  {/* GitHub Integration Section - Added to the "red box" area */}
+                  {/* GitHub Integration Section */}
                   <Card className="mb-4 border border-primary/50 bg-primary/5">
                     <CardContent className="p-3 text-sm">
                       <div className="font-medium flex items-center gap-1 mb-2">
