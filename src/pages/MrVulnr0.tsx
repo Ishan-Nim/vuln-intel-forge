@@ -135,14 +135,11 @@ document.getElementById('welcome').textContent = 'Welcome, ' + safeInput;`
   };
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4 text-primary">Mr.Vulnr0</h1>
-        <p className="text-xl mb-6">Your AI-Powered Vulnerability Assistant</p>
-
+    <div className="container-fluid p-0 h-screen">
+      <div className="h-full">
         {/* Main Demo Section */}
-        <div className="mb-12 border rounded-lg overflow-hidden shadow-lg">
-          <div className="grid grid-cols-1 md:grid-cols-4 h-[600px]">
+        <div className="h-full border rounded-lg overflow-hidden shadow-lg">
+          <div className="grid grid-cols-1 md:grid-cols-4 h-full">
             {/* Sidebar */}
             <div className="md:col-span-1 bg-sidebar border-r">
               <div className="p-4 h-full flex flex-col">
@@ -372,64 +369,6 @@ document.getElementById('welcome').textContent = 'Welcome, ' + safeInput;`
                 )}
               </div>
             </div>
-          </div>
-        </div>
-        
-        {/* Features Section */}
-        <div className="mb-16">
-          <h2 className="text-2xl font-bold mb-8">What Mr.Vulnr0 Can Do — In Action</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="transition-all duration-300 hover:shadow-lg">
-              <CardContent className="pt-6">
-                <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
-                  <MessageCircle className="text-primary" />
-                  Conversational AI Assistant
-                </h3>
-                <p className="text-muted-foreground">
-                  Users can chat naturally (e.g., "I think I have an XSS vulnerability…"), 
-                  and Mr.Vulnr0 responds with technical analysis and remediation guidance.
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card className="transition-all duration-300 hover:shadow-lg">
-              <CardContent className="pt-6">
-                <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
-                  <Code className="text-primary" />
-                  Auto-Detects Issues in Code
-                </h3>
-                <p className="text-muted-foreground">
-                  It inspects specific files (e.g., login.js) and pinpoints vulnerabilities
-                  like unsanitized user input.
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card className="transition-all duration-300 hover:shadow-lg">
-              <CardContent className="pt-6">
-                <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
-                  <CheckCircle className="text-primary" />
-                  Suggests Secure Fixes
-                </h3>
-                <p className="text-muted-foreground">
-                  Mr.Vulnr0 recommends security fixes (e.g., using DOMPurify.sanitize) 
-                  and explains why the fix is needed.
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card className="transition-all duration-300 hover:shadow-lg">
-              <CardContent className="pt-6">
-                <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
-                  <Terminal className="text-primary" />
-                  Inline Code Editing
-                </h3>
-                <p className="text-muted-foreground">
-                  Shows a code diff highlighting the vulnerable lines and the secure replacement.
-                </p>
-              </CardContent>
-            </Card>
           </div>
         </div>
       </div>
