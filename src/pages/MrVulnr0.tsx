@@ -495,8 +495,8 @@ const MrVulnr0 = () => {
                             <div className={cn(
                               "max-w-[80%] rounded-lg p-4",
                               msg.type === 'user' 
-                                ? "bg-primary text-primary-foreground" 
-                                : "bg-card"
+                                ? "chatgpt-user-bubble" // Updated to use new ChatGPT-specific class
+                                : "chatgpt-assistant-bubble" // Updated to use new ChatGPT-specific class
                             )}>
                               {msg.type === 'ai' && (
                                 <div className="flex items-center gap-2 mb-2">
@@ -522,6 +522,7 @@ const MrVulnr0 = () => {
                                     <Button 
                                       size="sm" 
                                       onClick={applyFix}
+                                      className="chatgpt-button" // Updated to use ChatGPT button style
                                     >
                                       Apply Fix
                                     </Button>
@@ -533,7 +534,7 @@ const MrVulnr0 = () => {
                         ))}
                         {isLoading && (
                           <div className="flex">
-                            <div className="max-w-[80%] rounded-lg p-4 bg-card">
+                            <div className="max-w-[80%] rounded-lg p-4 chatgpt-assistant-bubble">
                               <div className="flex items-center gap-2">
                                 <Shield className="text-primary" size={20} />
                                 <div className="font-medium">🛡️ Dr. 0/1</div>
@@ -563,7 +564,7 @@ const MrVulnr0 = () => {
                         />
                         <Button 
                           size="icon" 
-                          className="absolute right-2 bottom-2 rounded-full"
+                          className="absolute right-2 bottom-2 rounded-full chatgpt-button"
                           onClick={handleSendMessage}
                           disabled={isLoading || !inputValue.trim()}
                         >

@@ -1,102 +1,103 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
  
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 10%;
+    --background: 0 0% 100%; /* #FFFFFF - White */
+    --foreground: 220 6% 10%; /* #202123 - Dark gray/black for text */
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 10%;
+    --card: 0 0% 100%; /* White */
+    --card-foreground: 220 6% 10%; /* Dark gray for text on cards */
  
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 10%;
+    --popover: 0 0% 100%; /* White */
+    --popover-foreground: 220 6% 10%;
  
-    --primary: 142 71% 45%; /* ChatGPT green */
-    --primary-foreground: 0 0% 98%;
+    --primary: 162 79% 35%; /* #10A37F - ChatGPT Green */
+    --primary-foreground: 0 0% 100%; /* White text on primary */
  
-    --secondary: 0 0% 96%; /* Light gray for secondary */
-    --secondary-foreground: 0 0% 10%;
+    --secondary: 240 1% 97%; /* #F7F7F8 - Light gray */
+    --secondary-foreground: 220 6% 10%;
  
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
+    --muted: 240 1% 97%; /* #F7F7F8 - Light gray */
+    --muted-foreground: 220 6% 40%; /* Darker gray for muted text */
  
-    --accent: 142 71% 97%; /* Very light green for accent backgrounds */
-    --accent-foreground: 142 71% 30%; /* Darker green for accent text */
+    --accent: 162 79% 97%; /* Very light green for accent backgrounds */
+    --accent-foreground: 162 79% 30%; /* Darker green for accent text */
  
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 142 71% 45%; /* Match primary for rings */
+    --border: 240 1% 94%; /* Light gray border */
+    --input: 240 1% 94%;
+    --ring: 162 79% 35%; /* ChatGPT Green for rings */
  
     --radius: 0.5rem;
 
     /* Sidebar colors */
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 0 0% 10%;
-    --sidebar-primary: 142 71% 45%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 142 71% 97%;
-    --sidebar-accent-foreground: 142 71% 30%;
-    --sidebar-border: 0 0% 90%;
-    --sidebar-ring: 142 71% 45%;
+    --sidebar-background: 0 0% 100%; /* White */
+    --sidebar-foreground: 220 6% 10%;
+    --sidebar-primary: 162 79% 35%; /* ChatGPT Green */
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 162 79% 97%;
+    --sidebar-accent-foreground: 162 79% 30%;
+    --sidebar-border: 240 1% 94%;
+    --sidebar-ring: 162 79% 35%;
 
-    /* Severity Level Colors - keeping these since they work well */
+    /* Severity Level Colors */
     --severity-critical: 0 100% 65%;
     --severity-high: 25 100% 60%;
     --severity-medium: 45 100% 55%;
-    --severity-low: 142 71% 45%; /* Changed to match ChatGPT green */
-    --severity-info: 0 0% 33%; /* Keeping as gray */
+    --severity-low: 162 79% 35%; /* ChatGPT Green */
+    --severity-info: 0 0% 33%;
   }
  
   .dark {
-    --background: 0 0% 10%;
-    --foreground: 0 0% 98%;
+    --background: 240 5% 13%; /* #212020 - ChatGPT dark background */
+    --foreground: 240 3% 90%; /* #E4E4E7 - Light gray text */
  
-    --card: 0 0% 15%;
-    --card-foreground: 0 0% 98%;
+    --card: 252 6% 14%; /* #343541 - ChatGPT assistant bubble dark */
+    --card-foreground: 240 3% 90%;
  
-    --popover: 0 0% 15%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 252 6% 14%;
+    --popover-foreground: 240 3% 90%;
  
-    --primary: 142 71% 45%; /* ChatGPT green */
-    --primary-foreground: 0 0% 10%;
+    --primary: 162 79% 35%; /* #10A37F - ChatGPT Green */
+    --primary-foreground: 240 5% 13%;
  
-    --secondary: 0 0% 20%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 240 2% 27%; /* #444654 - ChatGPT user bubble dark */
+    --secondary-foreground: 240 3% 90%;
  
-    --muted: 0 0% 20%;
-    --muted-foreground: 0 0% 65%;
+    --muted: 240 2% 27%;
+    --muted-foreground: 240 5% 70%;
  
-    --accent: 142 71% 15%; /* Dark green for accent bg in dark mode */
-    --accent-foreground: 142 71% 60%; /* Lighter green for accent text in dark mode */
+    --accent: 162 79% 15%; /* Dark green for accent bg in dark mode */
+    --accent-foreground: 162 79% 60%; /* Lighter green for accent text */
  
     --destructive: 0 62% 30%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive-foreground: 240 3% 90%;
  
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 142 71% 45%;
+    --border: 240 2% 20%; /* Dark gray border */
+    --input: 240 2% 20%;
+    --ring: 162 79% 35%;
 
     /* Sidebar colors for dark mode */
-    --sidebar-background: 0 0% 15%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 142 71% 45%;
-    --sidebar-primary-foreground: 0 0% 10%;
-    --sidebar-accent: 142 71% 15%;
-    --sidebar-accent-foreground: 142 71% 60%;
-    --sidebar-border: 0 0% 20%;
-    --sidebar-ring: 142 71% 45%;
+    --sidebar-background: 252 6% 10%; /* Slightly darker than background */
+    --sidebar-foreground: 240 3% 90%;
+    --sidebar-primary: 162 79% 35%;
+    --sidebar-primary-foreground: 240 5% 13%;
+    --sidebar-accent: 162 79% 15%;
+    --sidebar-accent-foreground: 162 79% 60%;
+    --sidebar-border: 240 2% 20%;
+    --sidebar-ring: 162 79% 35%;
 
     /* Severity Level Colors for dark mode */
     --severity-critical: 0 70% 55%;
     --severity-high: 25 70% 50%;
     --severity-medium: 45 70% 45%;
-    --severity-low: 142 71% 45%; /* Changed to match ChatGPT green */
-    --severity-info: 0 0% 40%; /* Kept as gray */
+    --severity-low: 162 79% 35%; /* ChatGPT Green */
+    --severity-info: 0 0% 40%;
   }
 }
  
@@ -195,4 +196,17 @@ a, button {
 .button-hover-effect:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ChatGPT-specific styles */
+.chatgpt-user-bubble {
+  @apply bg-secondary text-secondary-foreground;
+}
+
+.chatgpt-assistant-bubble {
+  @apply bg-card text-card-foreground;
+}
+
+.chatgpt-button {
+  @apply bg-primary text-primary-foreground hover:bg-primary/90;
 }

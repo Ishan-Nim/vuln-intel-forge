@@ -67,8 +67,19 @@ export default {
           critical: '#e53e3e',
           high: '#dd6b20',
           medium: '#d69e2e',
-          low: '#38a169',
-          info: '#555555', // Kept as gray
+          low: '#10A37F', // ChatGPT green
+          info: '#555555', // Gray
+        },
+        chatgpt: {
+          green: '#10A37F',
+          'user-bubble-dark': '#444654', 
+          'assistant-bubble-dark': '#343541',
+          'user-bubble-light': '#F7F7F8',
+          'assistant-bubble-light': '#F0F0F0',
+          'background-dark': '#212020',
+          'background-light': '#FFFFFF',
+          'text-dark': '#E4E4E7',
+          'text-light': '#202123'
         }
       },
       borderRadius: {

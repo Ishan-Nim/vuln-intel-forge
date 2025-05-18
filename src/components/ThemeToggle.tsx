@@ -13,7 +13,7 @@ export function ThemeToggle() {
         pressed={theme === "dark"}
         onPressedChange={() => setTheme(theme === "light" ? "dark" : "light")}
         aria-label="Toggle theme"
-        className="p-2"
+        className="p-2 text-primary hover:bg-accent hover:text-accent-foreground"
       >
         {theme === "light" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
         <span className="sr-only">Toggle theme</span>
