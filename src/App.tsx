@@ -11,6 +11,7 @@ import VulnerabilityDatabase from "./pages/VulnerabilityDatabase";
 import Community from "./pages/Community";
 import About from "./pages/About";
 import Pricing from "./pages/Pricing";
+import MrVulnr0 from "./pages/MrVulnr0";
 import { ThemeProvider } from "./context/ThemeProvider";
 import { useEffect } from "react";
 import { startScheduleChecker } from "./lib/scheduledFetchService";
@@ -40,6 +41,7 @@ const App = () => {
                   <Route path="/community" element={<Community />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/pricing" element={<Pricing />} />
+                  <Route path="/mrvulnr0" element={<MrVulnr0 />} />
                   <Route path="/admin" element={<Admin />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>

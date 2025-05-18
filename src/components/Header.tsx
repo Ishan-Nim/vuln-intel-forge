@@ -1,15 +1,16 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/context/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Home, LayoutDashboard, Users, HelpCircle, DollarSign } from "lucide-react";
+import { Home, LayoutDashboard, Users, HelpCircle, DollarSign, Shield } from "lucide-react";
 
 const Header: React.FC = () => {
   const { theme } = useTheme();
   const isDarkMode = theme === 'dark';
+  const location = useLocation();
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -28,6 +29,7 @@ const Header: React.FC = () => {
         <nav className="hidden md:flex items-center gap-1">
           <NavLink to="/" icon={<Home size={18} />}>Home</NavLink>
           <NavLink to="/vulndb" icon={<LayoutDashboard size={18} />}>Vulnerability Database</NavLink>
+          <NavLink to="/mrvulnr0" icon={<Shield size={18} />}>Mr.Vulnr0</NavLink>
           <NavLink to="/community" icon={<Users size={18} />}>Community</NavLink>
           <NavLink to="/about" icon={<HelpCircle size={18} />}>About</NavLink>
           <NavLink to="/pricing" icon={<DollarSign size={18} />}>Pricing</NavLink>
@@ -49,6 +51,7 @@ interface NavLinkProps {
 }
 
 const NavLink: React.FC<NavLinkProps> = ({ children, to, icon }) => {
+  const location = useLocation();
   const isActive = location.pathname === to;
   
   return (
