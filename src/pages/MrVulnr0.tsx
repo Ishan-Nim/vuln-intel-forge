@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -323,22 +322,16 @@ const MrVulnr0 = () => {
       const formData = new FormData();
       formData.append('report', file);
       
-      // Call the Supabase edge function to analyze the report
-      const response = await fetch(
-        `${process.env.SUPABASE_URL || 'https://your-project.supabase.co'}/functions/v1/analyze-report`,
-        {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY || 'your-anon-key'}`
-          },
-          body: formData
+      // Call the Supabase edge function to analyze the report using the supabase client
+      const { data, error } = await supabase.functions.invoke('analyze-report', {
+        body: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
         }
-      );
+      });
       
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to analyze report');
+      if (error) {
+        throw new Error(error.message || 'Failed to analyze report');
       }
       
       // Set the analysis result
