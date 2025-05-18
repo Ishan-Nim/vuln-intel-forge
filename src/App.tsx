@@ -18,6 +18,7 @@ import { useEffect } from "react";
 import { startScheduleChecker } from "./lib/scheduledFetchService";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import PageTransition from "./components/PageTransition";
 
 const queryClient = new QueryClient();
 
@@ -36,19 +37,21 @@ const App = () => {
           <BrowserRouter>
             <div className="min-h-screen flex flex-col">
               <Header />
-              <div className="flex-1">
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/vulndb" element={<VulnerabilityDatabase />} />
-                  <Route path="/community" element={<Community />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/pricing" element={<Pricing />} />
-                  <Route path="/mrvulnr0" element={<DrVulner01 />} />
-                  <Route path="/admin" element={<Admin />} />
-                  <Route path="/guidelines" element={<ProjectGuidelines />} />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </div>
+              <PageTransition>
+                <div className="flex-1">
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/vulndb" element={<VulnerabilityDatabase />} />
+                    <Route path="/community" element={<Community />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/pricing" element={<Pricing />} />
+                    <Route path="/mrvulnr0" element={<DrVulner01 />} />
+                    <Route path="/admin" element={<Admin />} />
+                    <Route path="/guidelines" element={<ProjectGuidelines />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </div>
+              </PageTransition>
               <Footer />
             </div>
           </BrowserRouter>
