@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,6 +5,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Users, MessageCircle, Globe, Share2 } from 'lucide-react';
+
+// Helper function to clean content of unwanted URLs if needed
+const cleanContent = (content: string) => {
+  if (!content) return "";
+  return content.replace(/https?:\/\/lovable\.dev\/[^\s]*/g, "").replace(/lovable\.dev/g, "");
+};
 
 const Community = () => {
   return (
