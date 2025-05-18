@@ -12,7 +12,7 @@ const CtaSection = () => {
           Start using Dr.Vulner0/1 today and take the first step towards more secure applications.
         </p>
         <div className="flex flex-wrap justify-center gap-4">
-          <Button asChild size="lg" className="text-base px-8 py-6 h-auto font-medium">
+          <Button asChild size="lg" className="text-base px-8 py-6 h-auto font-medium bg-[#10A37F] hover:bg-[#10A37F]/90">
             <Link to="/mrvulnr0">Try Dr.Vulner0/1 Now</Link>
           </Button>
           <Button asChild variant="outline" size="lg" className="text-base px-8 py-6 h-auto font-medium bg-transparent dark:bg-transparent dark:text-chatgpt-text-dark dark:border-gray-700 dark:hover:bg-gray-800/30">
