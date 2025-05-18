@@ -2,7 +2,6 @@
 import React from 'react';
 import HeroSection from '@/components/home/HeroSection';
 import GitHubIntegrationSection from '@/components/home/GitHubIntegrationSection';
-import GitHubTerminalSection from '@/components/home/GitHubTerminalSection';
 import ChatDemoSection from '@/components/home/ChatDemoSection';
 import VulnerabilityPreviewSection from '@/components/home/VulnerabilityPreviewSection';
 import FeaturesSection from '@/components/home/FeaturesSection';
@@ -16,7 +15,6 @@ const Index = () => {
       <main className="flex-1">
         <HeroSection />
         <GitHubIntegrationSection />
-        <GitHubTerminalSection />
         <ChatDemoSection />
         <VulnerabilityPreviewSection />
         <FeaturesSection />
