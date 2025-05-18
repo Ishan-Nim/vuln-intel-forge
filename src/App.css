@@ -1,1 +1,8 @@
+
 /* All styles moved to index.css and tailwind classes */
+
+/* Home page specific styles */
+body.home {
+  background-color: rgba(33,32,32,255);
+  color: #E4E4E7;
+}

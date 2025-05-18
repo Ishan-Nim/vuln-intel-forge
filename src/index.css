@@ -110,6 +110,20 @@
   }
 }
 
+/* Home page specific styles with the requested colors */
+.home-page {
+  background-color: rgba(33,32,32,255);
+  color: #E4E4E7;
+}
+
+.home-page main {
+  background-color: rgba(33,32,32,255);
+}
+
+.home-page footer {
+  background-color: rgba(48,48,48,255);
+}
+
 /* Page transition animations */
 .page-transition {
   position: relative;
