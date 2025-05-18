@@ -1,7 +1,9 @@
+
 import { fetchPostsFromRSS } from './api';
 import { toast } from "sonner";
 
-// Constants for localStorage keys
+// Constants for fetch history in localStorage
+// (These remain in localStorage as they're just for UI display)
 const LAST_CHECK_KEY = 'vulnerability_last_check';
 const NEXT_FETCH_KEY = 'vulnerability_next_fetch';
 const FETCH_HISTORY_KEY = 'vulnerability_fetch_history';

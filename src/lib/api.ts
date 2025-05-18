@@ -1,62 +1,207 @@
+
 import { toast } from "sonner";
 import { EnrichedVulnerability, RawVulnerability, SeverityLevel } from "@/types/vulnerability";
 
-// Mock database tables using local storage
-const RAW_POSTS_KEY = 'vulnerabilitydb_raw_posts';
-const ENRICHED_POSTS_KEY = 'vulnerabilitydb_enriched_posts';
+// Database constants
+const DB_NAME = 'VulnerabilityDatabase';
+const DB_VERSION = 1;
+const RAW_POSTS_STORE = 'rawVulnerabilities';
+const ENRICHED_POSTS_STORE = 'enrichedVulnerabilities';
 
-// Initialize local storage with empty arrays if not present
-const initializeStorage = () => {
-  if (!localStorage.getItem(RAW_POSTS_KEY)) {
-    localStorage.setItem(RAW_POSTS_KEY, JSON.stringify([]));
-  }
-  if (!localStorage.getItem(ENRICHED_POSTS_KEY)) {
-    localStorage.setItem(ENRICHED_POSTS_KEY, JSON.stringify([]));
+// Open database connection
+const openDB = (): Promise<IDBDatabase> => {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+    
+    request.onerror = (event) => {
+      console.error('Error opening database:', event);
+      reject('Could not open database');
+    };
+    
+    request.onsuccess = (event) => {
+      resolve(request.result);
+    };
+    
+    request.onupgradeneeded = (event) => {
+      const db = request.result;
+      
+      // Create object stores if they don't exist
+      if (!db.objectStoreNames.contains(RAW_POSTS_STORE)) {
+        const rawStore = db.createObjectStore(RAW_POSTS_STORE, { keyPath: 'id' });
+        rawStore.createIndex('processed', 'processed', { unique: false });
+      }
+      
+      if (!db.objectStoreNames.contains(ENRICHED_POSTS_STORE)) {
+        const enrichedStore = db.createObjectStore(ENRICHED_POSTS_STORE, { keyPath: 'id' });
+        enrichedStore.createIndex('severityLevel', 'severityLevel', { unique: false });
+      }
+    };
+  });
+};
+
+// Get raw posts from database
+export const getRawVulnerabilities = async (): Promise<RawVulnerability[]> => {
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(RAW_POSTS_STORE, 'readonly');
+      const store = transaction.objectStore(RAW_POSTS_STORE);
+      const request = store.getAll();
+      
+      request.onsuccess = () => {
+        resolve(request.result);
+      };
+      
+      request.onerror = (event) => {
+        console.error('Error getting raw vulnerabilities:', event);
+        reject('Could not retrieve raw vulnerabilities');
+      };
+    });
+  } catch (error) {
+    console.error('Database error:', error);
+    return [];
   }
 };
 
-// Get raw posts from local storage
-export const getRawVulnerabilities = (): RawVulnerability[] => {
-  initializeStorage();
-  return JSON.parse(localStorage.getItem(RAW_POSTS_KEY) || '[]');
-};
-
-// Get enriched posts from local storage
-export const getEnrichedVulnerabilities = (): EnrichedVulnerability[] => {
-  initializeStorage();
-  return JSON.parse(localStorage.getItem(ENRICHED_POSTS_KEY) || '[]');
-};
-
-// Save raw post to local storage
-export const saveRawVulnerability = (vulnerability: RawVulnerability) => {
-  const posts = getRawVulnerabilities();
-  // Check if post already exists to avoid duplicates
-  if (!posts.some(post => post.id === vulnerability.id)) {
-    posts.push(vulnerability);
-    localStorage.setItem(RAW_POSTS_KEY, JSON.stringify(posts));
+// Get enriched posts from database
+export const getEnrichedVulnerabilities = async (): Promise<EnrichedVulnerability[]> => {
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(ENRICHED_POSTS_STORE, 'readonly');
+      const store = transaction.objectStore(ENRICHED_POSTS_STORE);
+      const request = store.getAll();
+      
+      request.onsuccess = () => {
+        resolve(request.result);
+      };
+      
+      request.onerror = (event) => {
+        console.error('Error getting enriched vulnerabilities:', event);
+        reject('Could not retrieve enriched vulnerabilities');
+      };
+    });
+  } catch (error) {
+    console.error('Database error:', error);
+    return [];
   }
 };
 
-// Save enriched post to local storage
-export const saveEnrichedVulnerability = (vulnerability: EnrichedVulnerability) => {
-  const posts = getEnrichedVulnerabilities();
-  // Check if post already exists, update if it does
-  const existingIndex = posts.findIndex(post => post.id === vulnerability.id);
-  if (existingIndex >= 0) {
-    posts[existingIndex] = vulnerability;
-  } else {
-    posts.push(vulnerability);
+// Save raw vulnerability to database
+export const saveRawVulnerability = async (vulnerability: RawVulnerability): Promise<void> => {
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(RAW_POSTS_STORE, 'readwrite');
+      const store = transaction.objectStore(RAW_POSTS_STORE);
+      
+      // Check if post already exists
+      const getRequest = store.get(vulnerability.id);
+      
+      getRequest.onsuccess = () => {
+        if (!getRequest.result) {
+          // Only add if it doesn't exist
+          const addRequest = store.add(vulnerability);
+          
+          addRequest.onsuccess = () => {
+            resolve();
+          };
+          
+          addRequest.onerror = (event) => {
+            console.error('Error adding raw vulnerability:', event);
+            reject('Could not save raw vulnerability');
+          };
+        } else {
+          resolve(); // Already exists, no action needed
+        }
+      };
+      
+      getRequest.onerror = (event) => {
+        console.error('Error checking raw vulnerability:', event);
+        reject('Could not check if vulnerability exists');
+      };
+    });
+  } catch (error) {
+    console.error('Database error:', error);
   }
-  localStorage.setItem(ENRICHED_POSTS_KEY, JSON.stringify(posts));
+};
+
+// Save enriched vulnerability to database
+export const saveEnrichedVulnerability = async (vulnerability: EnrichedVulnerability): Promise<void> => {
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(ENRICHED_POSTS_STORE, 'readwrite');
+      const store = transaction.objectStore(ENRICHED_POSTS_STORE);
+      
+      // Check if post already exists to update it
+      const getRequest = store.get(vulnerability.id);
+      
+      getRequest.onsuccess = () => {
+        const request = getRequest.result 
+          ? store.put(vulnerability) // Update existing
+          : store.add(vulnerability); // Add new
+        
+        request.onsuccess = () => {
+          resolve();
+        };
+        
+        request.onerror = (event) => {
+          console.error('Error saving enriched vulnerability:', event);
+          reject('Could not save enriched vulnerability');
+        };
+      };
+      
+      getRequest.onerror = (event) => {
+        console.error('Error checking enriched vulnerability:', event);
+        reject('Could not check if vulnerability exists');
+      };
+    });
+  } catch (error) {
+    console.error('Database error:', error);
+  }
 };
 
 // Mark a raw vulnerability as processed
-export const markRawVulnerabilityAsProcessed = (id: string) => {
-  const posts = getRawVulnerabilities();
-  const updatedPosts = posts.map(post => 
-    post.id === id ? { ...post, processed: true } : post
-  );
-  localStorage.setItem(RAW_POSTS_KEY, JSON.stringify(updatedPosts));
+export const markRawVulnerabilityAsProcessed = async (id: string): Promise<void> => {
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(RAW_POSTS_STORE, 'readwrite');
+      const store = transaction.objectStore(RAW_POSTS_STORE);
+      
+      // Get the vulnerability first
+      const getRequest = store.get(id);
+      
+      getRequest.onsuccess = () => {
+        if (getRequest.result) {
+          const vulnerability = getRequest.result;
+          vulnerability.processed = true;
+          
+          // Update the vulnerability
+          const updateRequest = store.put(vulnerability);
+          
+          updateRequest.onsuccess = () => {
+            resolve();
+          };
+          
+          updateRequest.onerror = (event) => {
+            console.error('Error updating vulnerability status:', event);
+            reject('Could not mark vulnerability as processed');
+          };
+        } else {
+          reject('Vulnerability not found');
+        }
+      };
+      
+      getRequest.onerror = (event) => {
+        console.error('Error getting vulnerability:', event);
+        reject('Could not retrieve vulnerability');
+      };
+    });
+  } catch (error) {
+    console.error('Database error:', error);
+  }
 };
 
 // Fetch posts from RSS feed
@@ -72,7 +217,8 @@ export const fetchPostsFromRSS = async () => {
     
     // Process each item in the RSS feed
     let newItemCount = 0;
-    items.forEach((item, index) => {
+    for (let index = 0; index < items.length; index++) {
+      const item = items[index];
       const id = `raw-${Date.now()}-${index}`;
       const title = item.querySelector('title')?.textContent || '';
       const link = item.querySelector('link')?.textContent || '';
@@ -89,13 +235,13 @@ export const fetchPostsFromRSS = async () => {
         processed: false
       };
       
-      // Save to local storage
-      const existingPosts = getRawVulnerabilities();
+      // Get existing posts to check for duplicates
+      const existingPosts = await getRawVulnerabilities();
       if (!existingPosts.some(post => post.title === title && post.link === link)) {
-        saveRawVulnerability(vulnerability);
+        await saveRawVulnerability(vulnerability);
         newItemCount++;
       }
-    });
+    }
     
     toast.success(`Fetched ${newItemCount} new vulnerability posts`);
     return true;
@@ -162,37 +308,42 @@ export const aiEnrichVulnerability = async (vulnerability: RawVulnerability): Pr
 
 // Process all unprocessed raw vulnerabilities
 export const processAllRawVulnerabilities = async () => {
-  const rawPosts = getRawVulnerabilities();
-  const unprocessedPosts = rawPosts.filter(post => !post.processed);
-  
-  let processedCount = 0;
-  let failedCount = 0;
-  
-  for (const post of unprocessedPosts) {
-    try {
-      const enriched = await aiEnrichVulnerability(post);
-      if (enriched) {
-        saveEnrichedVulnerability(enriched);
-        markRawVulnerabilityAsProcessed(post.id);
-        processedCount++;
-      } else {
+  try {
+    const rawPosts = await getRawVulnerabilities();
+    const unprocessedPosts = rawPosts.filter(post => !post.processed);
+    
+    let processedCount = 0;
+    let failedCount = 0;
+    
+    for (const post of unprocessedPosts) {
+      try {
+        const enriched = await aiEnrichVulnerability(post);
+        if (enriched) {
+          await saveEnrichedVulnerability(enriched);
+          await markRawVulnerabilityAsProcessed(post.id);
+          processedCount++;
+        } else {
+          failedCount++;
+        }
+      } catch (error) {
+        console.error(`Error processing post ${post.id}:`, error);
         failedCount++;
       }
-    } catch (error) {
-      console.error(`Error processing post ${post.id}:`, error);
-      failedCount++;
     }
-  }
-  
-  if (processedCount > 0) {
-    toast.success(`Successfully enriched ${processedCount} vulnerability posts`);
-  }
-  
-  if (failedCount > 0) {
-    toast.error(`Failed to enrich ${failedCount} posts`);
-  }
-  
-  if (unprocessedPosts.length === 0) {
-    toast.info('No new vulnerabilities to process');
+    
+    if (processedCount > 0) {
+      toast.success(`Successfully enriched ${processedCount} vulnerability posts`);
+    }
+    
+    if (failedCount > 0) {
+      toast.error(`Failed to enrich ${failedCount} posts`);
+    }
+    
+    if (unprocessedPosts.length === 0) {
+      toast.info('No new vulnerabilities to process');
+    }
+  } catch (error) {
+    console.error('Error processing vulnerabilities:', error);
+    toast.error('Database error during vulnerability processing');
   }
 };

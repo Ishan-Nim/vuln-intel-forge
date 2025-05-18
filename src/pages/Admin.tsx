@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -29,9 +28,9 @@ const Admin = () => {
   });
 
   // Load statistics on component mount and when data changes
-  const loadStats = () => {
-    const rawPosts = getRawVulnerabilities();
-    const enrichedPosts = getEnrichedVulnerabilities();
+  const loadStats = async () => {
+    const rawPosts = await getRawVulnerabilities();
+    const enrichedPosts = await getEnrichedVulnerabilities();
     
     const unprocessedRaw = rawPosts.filter(post => !post.processed);
     
@@ -67,7 +66,7 @@ const Admin = () => {
     setIsLoadingRSS(true);
     try {
       await fetchPostsFromRSS();
-      loadStats();
+      await loadStats();
     } finally {
       setIsLoadingRSS(false);
     }
@@ -79,7 +78,7 @@ const Admin = () => {
     setProcessProgress(0);
     
     try {
-      const unprocessedPosts = rawVulnerabilities.filter(post => !post.processed);
+      const unprocessedPosts = (await getRawVulnerabilities()).filter(post => !post.processed);
       const total = unprocessedPosts.length;
       
       // Show progress for UI purposes
@@ -98,8 +97,8 @@ const Admin = () => {
       setProcessProgress(100);
       
       // Short delay before completing to show 100% progress
-      setTimeout(() => {
-        loadStats();
+      setTimeout(async () => {
+        await loadStats();
         setProcessProgress(0);
         setIsProcessing(false);
       }, 500);
