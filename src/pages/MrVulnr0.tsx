@@ -1,10 +1,10 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { 
   Shield, 
   Code, 
@@ -129,7 +129,9 @@ const MrVulnr0 = () => {
   }, [messages]);
   
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const handleSendMessage = async () => {
@@ -144,6 +146,9 @@ const MrVulnr0 = () => {
     };
     setMessages(prev => [...prev, userMessage]);
     setInputValue('');
+    
+    // Force scroll to bottom after sending message
+    setTimeout(scrollToBottom, 100);
     
     // Indicate loading state
     setIsLoading(true);
@@ -211,6 +216,8 @@ const MrVulnr0 = () => {
       setMessages(prev => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
+      // Force scroll to bottom after receiving response
+      setTimeout(scrollToBottom, 100);
     }
   };
 
@@ -477,68 +484,70 @@ const MrVulnr0 = () => {
               <div className="flex-1 overflow-hidden">
                 {activePanel === 'chat' && (
                   <div className="flex flex-col h-full">
-                    {/* Messages Container */}
-                    <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                      {messages.map((msg) => (
-                        <div key={msg.id} className={cn(
-                          "flex",
-                          msg.type === 'user' ? "justify-end" : "justify-start"
-                        )}>
-                          <div className={cn(
-                            "max-w-[80%] rounded-lg p-4",
-                            msg.type === 'user' 
-                              ? "bg-primary text-primary-foreground" 
-                              : "bg-card"
+                    {/* Messages Container - Replace with ScrollArea component */}
+                    <ScrollArea className="flex-1 p-4">
+                      <div className="space-y-4">
+                        {messages.map((msg) => (
+                          <div key={msg.id} className={cn(
+                            "flex",
+                            msg.type === 'user' ? "justify-end" : "justify-start"
                           )}>
-                            {msg.type === 'ai' && (
-                              <div className="flex items-center gap-2 mb-2">
+                            <div className={cn(
+                              "max-w-[80%] rounded-lg p-4",
+                              msg.type === 'user' 
+                                ? "bg-primary text-primary-foreground" 
+                                : "bg-card"
+                            )}>
+                              {msg.type === 'ai' && (
+                                <div className="flex items-center gap-2 mb-2">
+                                  <Shield className="text-primary" size={20} />
+                                  <div className="font-medium">🛡️ Dr. Vulnerbits</div>
+                                </div>
+                              )}
+                              <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                              
+                              {msg.code && (
+                                <div className="mt-3">
+                                  <div className="bg-muted rounded-md p-3 mb-3 text-sm font-mono whitespace-pre-wrap overflow-x-auto">
+                                    {msg.code}
+                                  </div>
+                                  <div className="flex justify-end gap-2">
+                                    <Button 
+                                      variant="outline" 
+                                      size="sm" 
+                                      onClick={() => copyToClipboard(msg.code || '')}
+                                    >
+                                      Copy Code
+                                    </Button>
+                                    <Button 
+                                      size="sm" 
+                                      onClick={applyFix}
+                                    >
+                                      Apply Fix
+                                    </Button>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                        {isLoading && (
+                          <div className="flex">
+                            <div className="max-w-[80%] rounded-lg p-4 bg-card">
+                              <div className="flex items-center gap-2">
                                 <Shield className="text-primary" size={20} />
                                 <div className="font-medium">🛡️ Dr. Vulnerbits</div>
-                              </div>
-                            )}
-                            <p className="text-sm">{msg.content}</p>
-                            
-                            {msg.code && (
-                              <div className="mt-3">
-                                <div className="bg-muted rounded-md p-3 mb-3 text-sm font-mono whitespace-pre-wrap">
-                                  {msg.code}
-                                </div>
-                                <div className="flex justify-end gap-2">
-                                  <Button 
-                                    variant="outline" 
-                                    size="sm" 
-                                    onClick={() => copyToClipboard(msg.code || '')}
-                                  >
-                                    Copy Code
-                                  </Button>
-                                  <Button 
-                                    size="sm" 
-                                    onClick={applyFix}
-                                  >
-                                    Apply Fix
-                                  </Button>
+                                <div className="ml-2 flex items-center">
+                                  <Loader2 size={16} className="animate-spin" />
                                 </div>
                               </div>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                      {isLoading && (
-                        <div className="flex">
-                          <div className="max-w-[80%] rounded-lg p-4 bg-card">
-                            <div className="flex items-center gap-2">
-                              <Shield className="text-primary" size={20} />
-                              <div className="font-medium">🛡️ Dr. Vulnerbits</div>
-                              <div className="ml-2 flex items-center">
-                                <Loader2 size={16} className="animate-spin" />
-                              </div>
+                              <p className="text-sm mt-2 text-muted-foreground">Running a quick scan... 🔍</p>
                             </div>
-                            <p className="text-sm mt-2 text-muted-foreground">Running a quick scan... 🔍</p>
                           </div>
-                        </div>
-                      )}
-                      <div ref={messagesEndRef} />
-                    </div>
+                        )}
+                        <div ref={messagesEndRef} />
+                      </div>
+                    </ScrollArea>
                     
                     {/* Input Area */}
                     <div className="p-4 border-t">
@@ -549,7 +558,8 @@ const MrVulnr0 = () => {
                           value={inputValue}
                           onChange={(e) => setInputValue(e.target.value)}
                           onKeyDown={handleKeyPress}
-                          rows={1}
+                          rows={3}
+                          maxLength={2000}
                         />
                         <Button 
                           size="icon" 
