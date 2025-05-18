@@ -46,7 +46,7 @@ const GitHubIntegrationSection = () => {
         </p>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-          <div className="space-y-8">
+          <div className="space-y-8 mx-0 px-[28px]">
             <h3 className="text-2xl font-semibold">Integrate with your code repositories</h3>
             <p className="text-muted-foreground">
               Dr.Vulner0/1 integrates directly with your GitHub repositories, making it easy to push fixes and pull the latest code directly from our platform. This seamless workflow allows you to identify, fix, and deploy security patches without switching between tools.
