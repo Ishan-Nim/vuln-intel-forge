@@ -2,6 +2,8 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Shield, CheckCircle } from 'lucide-react';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+
 const ChatDemoSection = () => {
   return <section className="py-16 bg-neutral-900">
       <div className="container mx-auto px-4">
@@ -52,65 +54,77 @@ const ChatDemoSection = () => {
               
               {/* Right side - Chat interface */}
               <div className="w-2/3 flex flex-col">
-                {/* Dr.0/1 message */}
-                <div className="p-4 border-b">
-                  <div className="flex items-start gap-3">
-                    <Shield className="h-5 w-5 text-primary mt-1" />
-                    <div>
-                      <p className="font-medium mb-1">Dr.0/1</p>
-                      <p className="text-sm">Hello! I'm Dr.0/1, your AI vulnerability assistant. How can I help you today?</p>
-                    </div>
-                  </div>
-                </div>
+                {/* Tabs navigation */}
+                <Tabs defaultValue="chat" className="w-full">
+                  <TabsList className="w-full border-b rounded-none bg-transparent p-0">
+                    <TabsTrigger value="chat" className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent">Chat</TabsTrigger>
+                    <TabsTrigger value="code" className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent">Code</TabsTrigger>
+                    <TabsTrigger value="report" className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent">Report Analysis</TabsTrigger>
+                  </TabsList>
                 
-                {/* User message */}
-                <div className="p-4 border-b bg-primary/5">
-                  <div className="ml-auto max-w-md">
-                    <p className="text-sm bg-primary text-primary-foreground p-3 rounded-lg rounded-tr-none">I think I have an XSS vulnerability in my login form.</p>
-                  </div>
-                </div>
-                
-                {/* Dr.0/1 response */}
-                <div className="p-4">
-                  <div className="flex items-start gap-3">
-                    <Shield className="h-5 w-5 text-primary mt-1" />
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-2">
-                        <p className="font-medium">Dr.0/1</p>
-                        <span className="bg-green-500/20 text-green-600 text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
-                          <CheckCircle className="h-3 w-3" />
-                          <span>Found issue</span>
-                        </span>
-                      </div>
-                      
-                      <p className="text-sm">I found the issue in your login.js file. You're not sanitizing user input on line 42. Here's how to fix it securely:</p>
-                      
-                      <div className="bg-card border rounded-md p-3 font-mono text-xs">
-                        <pre>{`const safeInput = DOMPurify.sanitize(userInput);`}</pre>
-                      </div>
-                      
-                      <p className="text-sm">Would you like me to apply this patch to your code?</p>
-                      
-                      <div className="flex gap-2">
-                        <Button variant="secondary" size="sm" className="text-xs">Copy Code</Button>
-                        <Button size="sm" className="text-xs">Apply Fix</Button>
+                  {/* Chat tab content */}
+                  <TabsContent value="chat" className="p-0 mt-0">
+                    {/* Dr.0/1 message */}
+                    <div className="p-4 border-b">
+                      <div className="flex items-start gap-3">
+                        <Shield className="h-5 w-5 text-primary mt-1" />
+                        <div>
+                          <p className="font-medium mb-1">Dr.0/1</p>
+                          <p className="text-sm">Hello! I'm Dr.0/1, your AI vulnerability assistant. How can I help you today?</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-                
-                {/* Code preview */}
-                <div className="p-4 border-t bg-muted/30">
-                  <div className="flex justify-between items-center mb-2">
-                    <p className="text-xs font-mono">login.js</p>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm" className="text-xs h-7">View Diff</Button>
-                      <Button size="sm" className="text-xs h-7">Apply Fix</Button>
+                    
+                    {/* User message */}
+                    <div className="p-4 border-b bg-primary/5">
+                      <div className="ml-auto max-w-md">
+                        <p className="text-sm bg-primary text-primary-foreground p-3 rounded-lg rounded-tr-none">I think I have an XSS vulnerability in my login form.</p>
+                      </div>
                     </div>
-                  </div>
+                    
+                    {/* Dr.0/1 response */}
+                    <div className="p-4">
+                      <div className="flex items-start gap-3">
+                        <Shield className="h-5 w-5 text-primary mt-1" />
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-2">
+                            <p className="font-medium">Dr.0/1</p>
+                            <span className="bg-green-500/20 text-green-600 text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
+                              <CheckCircle className="h-3 w-3" />
+                              <span>Found issue</span>
+                            </span>
+                          </div>
+                          
+                          <p className="text-sm">I found the issue in your login.js file. You're not sanitizing user input on line 42. Here's how to fix it securely:</p>
+                          
+                          <div className="bg-card border rounded-md p-3 font-mono text-xs">
+                            <pre>{`const safeInput = DOMPurify.sanitize(userInput);`}</pre>
+                          </div>
+                          
+                          <p className="text-sm">Would you like me to apply this patch to your code?</p>
+                          
+                          <div className="flex gap-2">
+                            <Button variant="secondary" size="sm" className="text-xs">Copy Code</Button>
+                            <Button size="sm" className="text-xs">Apply Fix</Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
                   
-                  <div className="bg-card border rounded-md p-4 font-mono text-xs">
-                    <pre>{`function validateLogin(username, password) {
+                  {/* Code tab content */}
+                  <TabsContent value="code" className="p-0 mt-0">
+                    <div className="p-4 border-t bg-muted/30">
+                      <div className="flex justify-between items-center mb-2">
+                        <p className="text-xs font-mono">login.js</p>
+                        <div className="flex gap-2">
+                          <Button variant="outline" size="sm" className="text-xs h-7">View Diff</Button>
+                          <Button size="sm" className="text-xs h-7">Apply Fix</Button>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-card border rounded-md p-4 font-mono text-xs">
+                        <pre>{`function validateLogin(username, password) {
   // Get user input
   const userInput = document.getElementById('username').value;
   document.getElementById('welcome').innerHTML = 'Welcome, ' + userInput;
@@ -118,8 +132,48 @@ const ChatDemoSection = () => {
   // const safeInput = DOMPurify.sanitize(userInput);
   // document.getElementById('welcome').textContent = 'Welcome, ' + safeInput;
 }`}</pre>
-                  </div>
-                </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+                  
+                  {/* Report Analysis tab content */}
+                  <TabsContent value="report" className="p-0 mt-0">
+                    <div className="p-4 flex flex-col">
+                      <div className="flex items-start gap-3 mb-4">
+                        <Shield className="h-5 w-5 text-primary mt-1" />
+                        <div>
+                          <p className="font-medium mb-1">Report Analysis</p>
+                          <p className="text-sm">Upload your Markdown security report to analyze vulnerabilities and get recommended fixes.</p>
+                        </div>
+                      </div>
+                      
+                      <div className="border-2 border-dashed rounded-lg p-6 mb-4 text-center">
+                        <div className="flex flex-col items-center justify-center">
+                          <Button variant="outline" className="mb-2">Upload Report</Button>
+                          <p className="text-xs text-muted-foreground">Upload your Markdown (.md) report file</p>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-muted/20 rounded-lg p-4">
+                        <h3 className="text-sm font-medium mb-2">Report Summary</h3>
+                        <div className="grid grid-cols-3 gap-3">
+                          <div className="bg-card border rounded-md p-3 text-center">
+                            <p className="text-xs text-muted-foreground">Total Issues</p>
+                            <p className="text-2xl font-bold">12</p>
+                          </div>
+                          <div className="bg-card border rounded-md p-3 text-center">
+                            <p className="text-xs text-muted-foreground">Critical/High</p>
+                            <p className="text-2xl font-bold text-destructive">5</p>
+                          </div>
+                          <div className="bg-card border rounded-md p-3 text-center">
+                            <p className="text-xs text-muted-foreground">Fix Priority</p>
+                            <p className="text-sm font-medium">XSS in login form</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
               </div>
             </div>
           </div>

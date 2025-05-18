@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { 
   Shield, 
   Code, 
@@ -20,7 +21,9 @@ import {
   Terminal,
   ArrowUp,
   ArrowDown,
-  Loader2
+  Loader2,
+  BarChart,
+  FileWarning
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/components/ui/use-toast';
@@ -63,6 +66,22 @@ type ContextItem = {
   active: boolean;
 };
 
+type ReportAnalysis = {
+  totalVulnerabilities: number;
+  criticalCount: number;
+  highCount: number;
+  mediumCount: number;
+  lowCount: number;
+  fixPriority: string;
+  summary: string;
+  vulnerabilities: Array<{
+    name: string;
+    severity: string;
+    description: string;
+    recommendation: string;
+  }>;
+};
+
 const MrVulnr0 = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -76,7 +95,7 @@ const MrVulnr0 = () => {
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showCodeView, setShowCodeView] = useState(true);
-  const [activePanel, setActivePanel] = useState<'chat' | 'code'>('chat');
+  const [activePanel, setActivePanel] = useState<'chat' | 'code' | 'report'>('chat');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
   const [contextItems, setContextItems] = useState<ContextItem[]>([
@@ -121,6 +140,11 @@ const MrVulnr0 = () => {
   // New state for GitHub integration
   const [gitEnabled, setGitEnabled] = useState(true);
   const [terminalOutput, setTerminalOutput] = useState("Waiting for command...");
+  
+  // New state for report upload and analysis
+  const [isUploading, setIsUploading] = useState(false);
+  const [reportAnalysis, setReportAnalysis] = useState<ReportAnalysis | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   const { toast } = useToast();
   
@@ -269,6 +293,79 @@ const MrVulnr0 = () => {
 
   const startPull = () => {
     setTerminalOutput("Pulling latest changes from GitHub...\n> git pull origin main\nSuccess! Repository is now up to date.");
+  };
+  
+  // New Report upload and analysis functions
+  const handleReportUploadClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+  
+  const handleReportFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    // Check if file is markdown
+    if (file.type !== 'text/markdown' && !file.name.endsWith('.md')) {
+      toast({
+        variant: "destructive",
+        description: "Please upload a Markdown (.md) file",
+        duration: 3000,
+      });
+      return;
+    }
+    
+    setIsUploading(true);
+    
+    try {
+      // Create a FormData object to send the file
+      const formData = new FormData();
+      formData.append('report', file);
+      
+      // Call the Supabase edge function to analyze the report
+      const response = await fetch(
+        `${process.env.SUPABASE_URL || 'https://your-project.supabase.co'}/functions/v1/analyze-report`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY || 'your-anon-key'}`
+          },
+          body: formData
+        }
+      );
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to analyze report');
+      }
+      
+      // Set the analysis result
+      setReportAnalysis(data.analysis);
+      
+      toast({
+        description: "Report analyzed successfully!",
+        duration: 3000,
+      });
+      
+      // Switch to the report panel
+      setActivePanel('report');
+      
+    } catch (error) {
+      console.error('Error analyzing report:', error);
+      toast({
+        variant: "destructive",
+        description: `Failed to analyze report: ${error.message}`,
+        duration: 3000,
+      });
+    } finally {
+      setIsUploading(false);
+      // Reset the file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
   };
 
   return (
@@ -442,9 +539,21 @@ const MrVulnr0 = () => {
                     </CardContent>
                   </Card>
                   
-                  <Button variant="outline" className="w-full justify-start" size="sm">
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start" 
+                    size="sm"
+                    onClick={handleReportUploadClick}
+                  >
                     <FileUp size={16} className="mr-2" />
                     Upload Report
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept=".md,text/markdown"
+                      onChange={handleReportFileChange}
+                      className="hidden"
+                    />
                   </Button>
                 </div>
               </div>
@@ -478,6 +587,19 @@ const MrVulnr0 = () => {
                 >
                   <Terminal size={18} className="mr-2" />
                   Code
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  className={cn(
+                    "rounded-none border-b-2 px-4", 
+                    activePanel === 'report' 
+                      ? "border-primary text-primary" 
+                      : "border-transparent text-muted-foreground"
+                  )}
+                  onClick={() => setActivePanel('report')}
+                >
+                  <BarChart size={18} className="mr-2" />
+                  Report Analysis
                 </Button>
               </div>
 
@@ -628,6 +750,143 @@ const MrVulnr0 = () => {
                           </Button>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                )}
+                
+                {activePanel === 'report' && (
+                  <div className="flex flex-col h-full overflow-auto">
+                    <div className="p-4">
+                      <div className="flex items-start gap-3 mb-4">
+                        <Shield className="h-5 w-5 text-primary mt-1" />
+                        <div>
+                          <p className="font-medium mb-1">Report Analysis</p>
+                          <p className="text-sm">Upload your Markdown security report to analyze vulnerabilities and get recommended fixes.</p>
+                        </div>
+                      </div>
+                      
+                      {!reportAnalysis ? (
+                        <div 
+                          className="border-2 border-dashed rounded-lg p-12 mb-6 text-center cursor-pointer hover:bg-muted/30 transition-colors"
+                          onClick={handleReportUploadClick}
+                        >
+                          <div className="flex flex-col items-center justify-center">
+                            {isUploading ? (
+                              <Loader2 className="h-10 w-10 text-muted-foreground animate-spin mb-3" />
+                            ) : (
+                              <FileWarning className="h-10 w-10 text-muted-foreground mb-3" />
+                            )}
+                            <p className="text-lg font-medium mb-2">
+                              {isUploading ? "Analyzing report..." : "Upload Security Report"}
+                            </p>
+                            <p className="text-sm text-muted-foreground mb-4">
+                              Upload your Markdown (.md) report file for AI analysis
+                            </p>
+                            <Button
+                              variant="outline"
+                              onClick={handleReportUploadClick}
+                              disabled={isUploading}
+                              className="relative"
+                            >
+                              <FileUp className="mr-2" />
+                              {isUploading ? "Analyzing..." : "Select Report File"}
+                              <input
+                                ref={fileInputRef}
+                                type="file"
+                                accept=".md,text/markdown"
+                                onChange={handleReportFileChange}
+                                className="hidden"
+                                disabled={isUploading}
+                              />
+                            </Button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="space-y-6">
+                          <div className="bg-muted/20 rounded-lg p-4">
+                            <h3 className="text-lg font-medium mb-4">Report Summary</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                              <Card className="bg-card">
+                                <CardContent className="p-6 text-center">
+                                  <p className="text-sm text-muted-foreground mb-1">Total Vulnerabilities</p>
+                                  <p className="text-4xl font-bold">{reportAnalysis.totalVulnerabilities}</p>
+                                </CardContent>
+                              </Card>
+                              <Card className="bg-card">
+                                <CardContent className="p-6 text-center">
+                                  <p className="text-sm text-muted-foreground mb-1">Critical/High</p>
+                                  <p className="text-4xl font-bold text-destructive">
+                                    {reportAnalysis.criticalCount + reportAnalysis.highCount}
+                                  </p>
+                                </CardContent>
+                              </Card>
+                              <Card className="bg-card">
+                                <CardContent className="p-6">
+                                  <p className="text-sm text-muted-foreground mb-1 text-center">Fix Priority</p>
+                                  <p className="text-lg font-medium text-center">{reportAnalysis.fixPriority}</p>
+                                </CardContent>
+                              </Card>
+                            </div>
+                          </div>
+                          
+                          <div>
+                            <h3 className="text-lg font-medium mb-3">Analysis Summary</h3>
+                            <Card className="bg-card">
+                              <CardContent className="p-4">
+                                <p className="text-sm">{reportAnalysis.summary}</p>
+                              </CardContent>
+                            </Card>
+                          </div>
+                          
+                          <div>
+                            <h3 className="text-lg font-medium mb-3">Vulnerabilities</h3>
+                            <div className="space-y-3">
+                              {reportAnalysis.vulnerabilities.map((vuln, index) => (
+                                <Card key={index} className="bg-card">
+                                  <CardContent className="p-4">
+                                    <div className="flex justify-between items-start mb-2">
+                                      <h4 className="text-md font-medium">{vuln.name}</h4>
+                                      <span className={cn(
+                                        "inline-block rounded-full px-2 py-0.5 text-xs font-bold",
+                                        vuln.severity === 'critical' ? "bg-red-100 text-red-800" :
+                                        vuln.severity === 'high' ? "bg-red-100 text-red-800" :
+                                        vuln.severity === 'medium' ? "bg-yellow-100 text-yellow-800" :
+                                        "bg-blue-100 text-blue-800"
+                                      )}>
+                                        {vuln.severity.toUpperCase()}
+                                      </span>
+                                    </div>
+                                    <div className="text-sm mb-2">{vuln.description}</div>
+                                    <div>
+                                      <p className="text-sm font-medium">Recommendation:</p>
+                                      <p className="text-sm text-muted-foreground">{vuln.recommendation}</p>
+                                    </div>
+                                  </CardContent>
+                                </Card>
+                              ))}
+                            </div>
+                          </div>
+                          
+                          <div className="flex justify-end">
+                            <Button 
+                              variant="outline" 
+                              onClick={() => {
+                                setReportAnalysis(null);
+                                if (fileInputRef.current) {
+                                  fileInputRef.current.value = '';
+                                }
+                              }}
+                              className="mr-2"
+                            >
+                              Clear Analysis
+                            </Button>
+                            <Button onClick={handleReportUploadClick}>
+                              <FileUp className="mr-2" />
+                              Upload New Report
+                            </Button>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
